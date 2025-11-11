@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'accessing' }
-HyperSpaceJump >> applyEffect: spaceships and: actualSpaceship [
+HyperSpaceJump >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move: 4.
 	actualSpaceship updateShield: -1

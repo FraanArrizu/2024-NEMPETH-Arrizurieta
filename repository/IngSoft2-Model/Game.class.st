@@ -84,13 +84,15 @@ Game >> applyMercenary: idOfMercenarySpaceship to: idOfActualSpaceship [
 { #category : 'as yet unclassified' }
 Game >> applyRepeat: idOfTargetSpaceship [ 
 	
-	| affectedSpaceship index |
+	| affectedSpaceship index modifier|
 	self targetSpaceshipExistValidation: idOfTargetSpaceship.
 	affectedSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfTargetSpaceship ].
 	index := spaceships indexOf: affectedSpaceship.
 	spaceships removeAt: index.
 	
-	lastBox applyEffect: spaceships and: affectedSpaceship.
+	modifier := self modifierAt: lastBox position.
+	
+	lastBox applyEffect: spaceships and: affectedSpaceship through: modifier.
 	
 	spaceships add: affectedSpaceship beforeIndex: index.
 	board normalizeAll: spaceships.
@@ -195,6 +197,11 @@ Game >> mercenaryAvailabilityValidation: mercenarySpaceship [
 		Error signal: 'A spaceship chose a mercenary already chosen' ]
 ]
 
+{ #category : 'accessing' }
+Game >> modifierAt: aPosition [
+	^NormalModifier new.
+]
+
 { #category : 'as yet unclassified' }
 Game >> passTurn [
 	
@@ -228,7 +235,7 @@ Game >> playCard: aCardArguments [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualSpaceship boxToCheck winner |
+	| actualSpaceship boxToCheck winner modifier|
 	actualSpaceship := spaceships removeFirst.
 
 	actualSpaceship playTurn ifFalse: [ ^ self ].
@@ -239,7 +246,10 @@ Game >> playTurn [
 
 	boxToCheck := board findBoxIn: actualSpaceship position.
 	lastBox := boxToCheck.
-	boxToCheck applyEffect: spaceships and: actualSpaceship.
+	
+	modifier := self modifierAt: boxToCheck position.
+	
+	boxToCheck applyEffect: spaceships and: actualSpaceship through: modifier.
 	spaceships add: actualSpaceship.
 
 	board normalizeAll: spaceships.

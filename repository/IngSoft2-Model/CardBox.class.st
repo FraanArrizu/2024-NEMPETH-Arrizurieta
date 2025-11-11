@@ -14,7 +14,7 @@ CardBox class >> createWith: aDeck [
 ]
 
 { #category : 'accessing' }
-CardBox >> applyEffect: spaceships and: actualSpaceship [
+CardBox >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	| aCard |
 	aCard := deck giveACard.

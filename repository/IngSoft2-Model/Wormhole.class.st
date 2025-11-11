@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Wormhole >> applyEffect: spaceships and: actualSpaceship [
+Wormhole >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move: wormholeEnd position - self position.
 ]

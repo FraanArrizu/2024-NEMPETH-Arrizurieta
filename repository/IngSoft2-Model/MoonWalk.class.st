@@ -15,7 +15,7 @@ MoonWalk class >> createWith: boxesToMoveBackward [
 ]
 
 { #category : 'accessing' }
-MoonWalk >> applyEffect: spaceships and: actualSpaceship [
+MoonWalk >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	spaceships do: [ :aSpaceship |
 		aSpaceship position ~= 1 ifTrue: [

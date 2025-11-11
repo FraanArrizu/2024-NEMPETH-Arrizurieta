@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'accessing' }
-BlackHole >> applyEffect: spaceships and: actualSpaceship [
+BlackHole >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move: -4.
 ]

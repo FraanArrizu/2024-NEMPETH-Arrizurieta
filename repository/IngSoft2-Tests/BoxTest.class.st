@@ -8,8 +8,9 @@ Class {
 { #category : 'tests' }
 BoxTest >> test001WhenSpaceshipIsOnBlackHoleBoxThenSpaceshipMovesBackFourBoxes [
 	
-	|actualSpaceship aSpaceship anotherSpaceship spaceships aBlackHole|
+	|actualSpaceship aSpaceship anotherSpaceship spaceships aBlackHole modifier|
 	
+	modifier := NormalModifier new.
 	aSpaceship := Spaceship createWithId: 1.
 	anotherSpaceship := Spaceship createWithId: 2.
 	spaceships := OrderedCollection new.
@@ -21,7 +22,8 @@ BoxTest >> test001WhenSpaceshipIsOnBlackHoleBoxThenSpaceshipMovesBackFourBoxes [
 	
 	self assert: aSpaceship position equals: 5.
 	self assert: anotherSpaceship position equals: 1.
-	aBlackHole applyEffect: spaceships and: actualSpaceship.
+	
+	aBlackHole applyEffect: spaceships and: actualSpaceship through: modifier.
 	
 	self assert: aSpaceship position equals: 1.
 	self assert: anotherSpaceship position equals: 1.
@@ -31,8 +33,9 @@ BoxTest >> test001WhenSpaceshipIsOnBlackHoleBoxThenSpaceshipMovesBackFourBoxes [
 { #category : 'tests' }
 BoxTest >> test002WhenSpaceshipIsOnHyperSpaceJumpBoxThenSpaceshipMovesFourBoxesAndLosesOneShield [
 	
-	|aSpaceship anotherSpaceship spaceships aHyperSpaceJump actualSpaceship|
+	|aSpaceship anotherSpaceship spaceships aHyperSpaceJump actualSpaceship modifier|
 	
+	modifier := NormalModifier new.
 	aSpaceship := Spaceship createWithId: 1.
 	anotherSpaceship := Spaceship createWithId: 2.
 	spaceships := OrderedCollection new.
@@ -46,7 +49,7 @@ BoxTest >> test002WhenSpaceshipIsOnHyperSpaceJumpBoxThenSpaceshipMovesFourBoxesA
 	self assert: anotherSpaceship position equals: 1.
 	self assert: anotherSpaceship shield equals: 3.
 	
-	aHyperSpaceJump applyEffect: spaceships and: actualSpaceship.
+	aHyperSpaceJump applyEffect: spaceships and: actualSpaceship through: modifier.
 	
 	self assert: aSpaceship position equals: 5.
 	self assert: aSpaceship shield equals: 2.
@@ -58,8 +61,9 @@ BoxTest >> test002WhenSpaceshipIsOnHyperSpaceJumpBoxThenSpaceshipMovesFourBoxesA
 { #category : 'tests' }
 BoxTest >> test003WhenSpaceshipIsOnAtomicBombBoxThenAllSpaceshipMoveToPositionOneAndLoseOneShield [
 	
-	|spaceshipOne spaceshipTwo spaceshipThree spaceships aAtomicBomb actualSpaceship |
+	|spaceshipOne spaceshipTwo spaceshipThree spaceships aAtomicBomb actualSpaceship modifier|
 	
+	modifier := NormalModifier new.
 	spaceshipOne := Spaceship createWithId: 1.
 	spaceshipTwo := Spaceship createWithId: 2.
 	spaceshipThree := Spaceship createWithId: 3.
@@ -80,7 +84,7 @@ BoxTest >> test003WhenSpaceshipIsOnAtomicBombBoxThenAllSpaceshipMoveToPositionOn
 	self assert: spaceshipThree shield equals: 3.
 	
 	actualSpaceship := spaceships removeFirst.
-	aAtomicBomb applyEffect: spaceships and: actualSpaceship.
+	aAtomicBomb applyEffect: spaceships and: actualSpaceship through: modifier.
 	
 	self assert: spaceshipOne position equals: 1.
 	self assert: spaceshipOne shield equals: 2.
@@ -94,8 +98,9 @@ BoxTest >> test003WhenSpaceshipIsOnAtomicBombBoxThenAllSpaceshipMoveToPositionOn
 { #category : 'tests' }
 BoxTest >> test004WhenSpaceshipIsOnMoonWalkThenTheOtherSpaceshipsMovesBackTwoPositionsExceptForTheOnesOnTheSafeZone [
 	
-	|spaceshipOne spaceshipTwo spaceshipThree spaceships aMoonWalk actualSpaceship|
+	|spaceshipOne spaceshipTwo spaceshipThree spaceships aMoonWalk actualSpaceship modifier|
 	
+	modifier := NormalModifier new.
 	spaceshipOne := Spaceship createWithId: 1.
 	spaceshipTwo := Spaceship createWithId: 2.
 	spaceshipThree := Spaceship createWithId: 3.
@@ -113,7 +118,7 @@ BoxTest >> test004WhenSpaceshipIsOnMoonWalkThenTheOtherSpaceshipsMovesBackTwoPos
 	self assert: spaceshipTwo position equals: 3.
 	self assert: spaceshipThree position equals: 1.
 
-	aMoonWalk applyEffect: spaceships and: actualSpaceship.
+	aMoonWalk applyEffect: spaceships and: actualSpaceship through: modifier.
 	
 	self assert: spaceshipOne position equals: 5.
 	self assert: spaceshipTwo position equals: 1.
@@ -124,8 +129,9 @@ BoxTest >> test004WhenSpaceshipIsOnMoonWalkThenTheOtherSpaceshipsMovesBackTwoPos
 { #category : 'tests' }
 BoxTest >> test005WhenASpaceshipIsOnHyperJumpThenSpaceshipMovesASelectedAmountOfParsecs [
 	
-	|spaceshipOne spaceshipTwo spaceshipThree spaceships aHyperJump parsecOne lightYearOne lightYearTwo |
+	|spaceshipOne spaceshipTwo spaceshipThree spaceships aHyperJump parsecOne lightYearOne lightYearTwo modifier |
 	
+	modifier := NormalModifier new.
 	spaceshipOne := Spaceship createWithId: 1.
 	spaceshipTwo := Spaceship createWithId: 2.
 	spaceshipThree := Spaceship createWithId: 3.
@@ -145,8 +151,8 @@ BoxTest >> test005WhenASpaceshipIsOnHyperJumpThenSpaceshipMovesASelectedAmountOf
 	self assert: spaceshipOne position equals: 5.
 	self assert: spaceshipTwo position equals: 3.
 
-	aHyperJump applyEffect: spaceships and: spaceshipOne.
-	aHyperJump applyEffect: spaceships and: spaceshipTwo.
+	aHyperJump applyNormalEffect: spaceships and: spaceshipOne.
+	aHyperJump applyNormalEffect: spaceships and: spaceshipTwo.
 
 	self assert: spaceshipOne position equals: 8.
 	self assert: spaceshipTwo position equals: 5.
@@ -177,9 +183,9 @@ BoxTest >> test006WhenAmountOfEffectsAppliedAreMoreThanCollectionOfParsecsThenSt
 	self assert: spaceshipTwo position equals: 2.
 	self assert: spaceshipThree position equals: 2.
 
-	aHyperJump applyEffect: spaceships and: spaceshipOne.
-	aHyperJump applyEffect: spaceships and: spaceshipTwo.
-	aHyperJump applyEffect: spaceships and: spaceshipThree.
+	aHyperJump applyNormalEffect: spaceships and: spaceshipOne.
+	aHyperJump applyNormalEffect: spaceships and: spaceshipTwo.
+	aHyperJump applyNormalEffect: spaceships and: spaceshipThree.
 	
 	self assert: spaceshipOne position equals: 4.
 	self assert: spaceshipTwo position equals: 3.
@@ -205,8 +211,9 @@ BoxTest >> test007VerifyCorrectCreationOfHyperJumpBox [
 { #category : 'tests' }
 BoxTest >> test008WhenHyperJumpApplyEffectThenSpaceshipIsMoveBetweenOneAndTwentyBoxes [
 
-	| aHyperJump spaceships aSpaceship anotherSpaceship actualSpaceship |
+	| aHyperJump spaceships aSpaceship anotherSpaceship actualSpaceship modifier|
 	
+	modifier := NormalModifier new.
 	aSpaceship := Spaceship createWithId: 1.
 	anotherSpaceship := Spaceship createWithId: 2.
 	spaceships := OrderedCollection with: aSpaceship with: anotherSpaceship.
@@ -214,7 +221,7 @@ BoxTest >> test008WhenHyperJumpApplyEffectThenSpaceshipIsMoveBetweenOneAndTwenty
 	
 	aHyperJump := HyperJump createWith: 40 andParsecsToBoxesRatio: 2.
 	
-	aHyperJump applyEffect: spaceships and: actualSpaceship. 
+	aHyperJump applyEffect: spaceships and: actualSpaceship through: modifier. 
 
 	self assert: ((aSpaceship position) between: 2 and: 21).
 	self assert: anotherSpaceship position equals: 1.	
@@ -223,8 +230,8 @@ BoxTest >> test008WhenHyperJumpApplyEffectThenSpaceshipIsMoveBetweenOneAndTwenty
 { #category : 'tests' }
 BoxTest >> test009WhenCardBoxApplyEffectThenSpaceshipAddACardOnItsPrivateDeck [
     
-    | cards aDeck aCardBox spaceships aSpaceship anotherSpaceship actualSpaceship |
-    
+    | cards aDeck aCardBox spaceships aSpaceship anotherSpaceship actualSpaceship modifier |
+    modifier := NormalModifier new.
     aSpaceship := Spaceship createWithId: 1.
     anotherSpaceship := Spaceship createWithId: 2.
     spaceships := OrderedCollection with: aSpaceship with: anotherSpaceship.
@@ -237,12 +244,12 @@ BoxTest >> test009WhenCardBoxApplyEffectThenSpaceshipAddACardOnItsPrivateDeck [
 	aDeck := LoadedDeck createWith: cards.
     
     aCardBox := CardBox createWith: aDeck.
-    aCardBox applyEffect: spaceships and: actualSpaceship. 
+    aCardBox applyEffect: spaceships and: actualSpaceship through: modifier. 
     
     self assert: (actualSpaceship cards size) equals: 1.
     
-    aCardBox applyEffect: spaceships and: actualSpaceship. 
-    aCardBox applyEffect: spaceships and: actualSpaceship. 
+    aCardBox applyEffect: spaceships and: actualSpaceship through: modifier. 
+    aCardBox applyEffect: spaceships and: actualSpaceship through: modifier. 
     
     self assert: (actualSpaceship cards size) equals: 3.
 ]

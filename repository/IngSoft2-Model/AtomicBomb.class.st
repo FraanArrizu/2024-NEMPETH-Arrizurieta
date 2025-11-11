@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'accessing' }
-AtomicBomb >> applyEffect: spaceships and: actualSpaceship [
+AtomicBomb >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	spaceships do: [ :aSpaceship |
 		aSpaceship position ~= 1 ifTrue: [

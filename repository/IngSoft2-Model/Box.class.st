@@ -9,12 +9,6 @@ Class {
 }
 
 { #category : 'accessing' }
-Box >> applyEffect: spaceships and: actualSpaceship [
-
-	self subclassResponsibility.
-]
-
-{ #category : 'accessing' }
 Box >> applyEffect: spaceships and: actualSpaceship through: aModifier [
 
 	aModifier applyEffectOf: self on: spaceships and: actualSpaceship.
@@ -22,7 +16,7 @@ Box >> applyEffect: spaceships and: actualSpaceship through: aModifier [
 
 { #category : 'as yet unclassified' }
 Box >> applyNormalEffect: spaceships and: actualSpaceship [
-    self applyEffect: spaceships and: actualSpaceship.
+    self subclassResponsibility.
 ]
 
 { #category : 'accessing' }

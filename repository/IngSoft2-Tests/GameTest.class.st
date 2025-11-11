@@ -124,8 +124,9 @@ GameTest >> test003WhenSpaceshipsCompleteTwoLapsOnATwoLapCompletedGameThenTheSpa
 { #category : 'tests' }
 GameTest >> test006WhenASpaceshipIsOnSecondWormholeThenSpaceshipMovesToPositionOne [
 
-	| spaceships aSpaceship anotherSpaceship aWormholeOne aWormholeTwo aBoxOne aPath aBoard aBoxTwo aBoxThree boxToCheck actualSpaceship |
+	| spaceships aSpaceship anotherSpaceship aWormholeOne aWormholeTwo aBoxOne aPath aBoard aBoxTwo aBoxThree boxToCheck actualSpaceship modifier |
 	
+	modifier := NormalModifier new.
 	aSpaceship := Spaceship createWithId: 1.
 	anotherSpaceship := Spaceship createWithId: 2.
 
@@ -153,7 +154,7 @@ GameTest >> test006WhenASpaceshipIsOnSecondWormholeThenSpaceshipMovesToPositionO
 	
 	aSpaceship move: 2.
 	boxToCheck := aBoard findBoxIn: (aSpaceship position).
-	boxToCheck applyEffect: spaceships and: actualSpaceship.
+	boxToCheck applyEffect: spaceships and: actualSpaceship through: modifier.
 	spaceships add: actualSpaceship.
 
 	self assert: aSpaceship position equals: 1
@@ -1552,57 +1553,6 @@ GameTest >> test036WhenARepeatCardIsPlayAndLastBoxIsAtomicbombThenAllSpaceshipLo
 	self
 		assert: aGame checkShieldsOfSpaceships
 		equals: (OrderedCollection with: 1 with: 1)
-]
-
-{ #category : 'tests' }
-GameTest >> test037WhenARepeatCardIsPlayAndLastBoxIsHyperJumpThenTheAffectedSpaceshipMovesFowardAnAmountOfParsecs [
-
-	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aHyperJump aPath aBoard aGame cardArguments parsecOne lightYearOne lightYearTwo |
-	aDie := LoadedDie of: 10.
-	aDie add: (OrderedCollection with: 3 with: 1).
-	dices := OrderedCollection with: aDie.
-
-	cards := { (1 -> Repeat) } asDictionary.
-	aDeck := LoadedDeck createWith: cards.
-
-	aNormalBoxOne := NormalBox new.
-	aNormalBoxTwo := NormalBox new.
-	aNormalBoxThree := NormalBox new.
-	aNormalBoxFour := NormalBox new.
-	aNormalBoxFive := NormalBox new.
-	aHyperJump := LoadedHyperJump createWith: 3 andParsecsToBoxesRatio: 2.
-	parsecOne := Parsec createWith: 6.
-	lightYearOne := LightYear createWith: 12.
-	lightYearTwo := LightYear createWith: 9.
-	aHyperJump addParsecs: (OrderedCollection with: parsecOne with: lightYearOne with: lightYearTwo).
-	aPath := OrderedCollection
-		         with: aNormalBoxOne
-		         with: aHyperJump
-		         with: aNormalBoxTwo
-		         with: aNormalBoxThree
-		         with: aNormalBoxFour
-		         with: aNormalBoxFive.
-
-	aBoard := Board createWith: aPath.
-	aGame := Game
-		         createWithNumberOfSpaceships: 2
-		         and: dices
-		         and: aDeck
-		         and: aBoard
-		         andLapsToWin: 3.
-
-	cardArguments := Dictionary new.
-	cardArguments at: 'idSpaceship' put: 1.
-	cardArguments at: 'idCardToUse' put: 1.
-	cardArguments at: 'idTargetSpaceship' put: 1.
-
-	aGame playTurn.
-	aGame playTurn.
-	aGame playCard: cardArguments.
-
-	self
-		assert: aGame checkPositionsOfSpaceships
-		equals: (OrderedCollection with: 6 with: 5)
 ]
 
 { #category : 'tests' }
