@@ -15,6 +15,11 @@ Wormhole >> applyNormalEffect: spaceships and: actualSpaceship [
 ]
 
 { #category : 'as yet unclassified' }
+Wormhole >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: self position - wormholeEnd position.
+]
+
+{ #category : 'as yet unclassified' }
 Wormhole >> associateWith: aWormhole [
 
 	wormholeEnd := aWormhole

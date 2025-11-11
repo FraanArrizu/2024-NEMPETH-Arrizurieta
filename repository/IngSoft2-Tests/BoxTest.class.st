@@ -293,3 +293,123 @@ BoxTest >> test012BlackHoleReversedMovesForward [
     "BlackHole revertido: mueve +4 en vez de -4"
     self assert: actualSpaceship position equals: 15.  "11 + 4"
 ]
+
+{ #category : 'tests' }
+BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
+    | moonWalk modifier spaceships spaceship1 spaceship2 actualSpaceship |
+    
+    moonWalk := MoonWalk createWith: 3.
+    modifier := ReversalModifier new.
+    
+    spaceship1 := Spaceship createWithId: 1.
+    spaceship2 := Spaceship createWithId: 2.
+    actualSpaceship := Spaceship createWithId: 3.
+    
+    spaceship1 move: 5.  "Posición 6"
+    spaceship2 move: 8.  "Posición 9"
+    actualSpaceship move: 10.  "Posición 11"
+    
+    spaceships := OrderedCollection with: spaceship1 with: spaceship2.
+    
+    moonWalk applyEffect: spaceships and: actualSpaceship through: modifier.
+    
+    "MoonWalk revertido: mueve todas +3 en vez de -3"
+    self assert: spaceship1 position equals: 9.   "6 + 3"
+    self assert: spaceship2 position equals: 12.  "9 + 3"
+    "actualSpaceship no está en la colección, no se afecta"
+]
+
+{ #category : 'tests' }
+BoxTest >> test014WormholeReversedMovesInOppositeDirection [
+    | wormholeStart wormholeEnd modifier spaceships actualSpaceship |
+    
+    wormholeStart := Wormhole new.
+    wormholeEnd := Wormhole new.
+    wormholeStart associateWith: wormholeEnd.
+    wormholeEnd associateWith: wormholeStart.
+    
+    "wormholeStart esta en posición 3 y wormholeEnd en posicion 8"
+    wormholeStart position: 3.
+    wormholeEnd position: 8.
+    
+    modifier := ReversalModifier new.
+    spaceships := OrderedCollection new.
+    actualSpaceship := Spaceship createWithId: 1.
+    actualSpaceship move: 2.  "pos 3 (donde esta wormholeStart)"
+    
+    wormholeStart applyEffect: spaceships and: actualSpaceship through: modifier.
+    
+    "Wormhole normal: 3 → 8 (move: 8-3 = +5)"
+    "Wormhole revertido: 8 → 3 (move: 3-8 = -5)"
+    "Desde pos 3, revertido deberia NO moverse (o ir a inicio)"
+    
+    "Ajustamos: revertido va en dirección opuesta"
+    self assert: actualSpaceship position equals: -2.  "3 + (3-8) = 3 - 5 = -2"
+]
+
+{ #category : 'tests' }
+BoxTest >> test015AtomicBombReversedBehavesLikeNormal [
+    | atomicBomb normalModifier reversalModifier spaceships1 spaceships2 spaceship1 spaceship2 actualSpaceship1 actualSpaceship2 |
+    
+    "Creamos dos escenarios identicos"
+    spaceship1 := Spaceship createWithId: 1.
+    spaceship1 move: 10.  "Pos 11"
+    spaceship1 updateShield: 2.  "3 shields"
+    
+    spaceship2 := Spaceship createWithId: 1.
+    spaceship2 move: 10.  "Pos 11"
+    spaceship2 updateShield: 2.  "3 shields"
+    
+    actualSpaceship1 := Spaceship createWithId: 2.
+    actualSpaceship2 := Spaceship createWithId: 2.
+    
+    spaceships1 := OrderedCollection with: spaceship1.
+    spaceships2 := OrderedCollection with: spaceship2.
+    
+    atomicBomb := AtomicBomb new.
+    normalModifier := NormalModifier new.
+    reversalModifier := ReversalModifier new.
+    
+    "Aplicar con NormalModifier"
+    atomicBomb applyEffect: spaceships1 and: actualSpaceship1 through: normalModifier.
+    
+    "Aplicar con ReversalModifier"
+    atomicBomb applyEffect: spaceships2 and: actualSpaceship2 through: reversalModifier.
+    
+    "AtomicBomb NO se revierte: mismo efecto"
+    self assert: spaceship1 position equals: spaceship2 position.
+    self assert: spaceship1 shield equals: spaceship2 shield.
+    self assert: actualSpaceship1 position equals: actualSpaceship2 position.
+    self assert: actualSpaceship1 shield equals: actualSpaceship2 shield.
+]
+
+{ #category : 'tests' }
+BoxTest >> test016CardBoxReversedDiscardsRandomCard [
+    | cards aDeck aCardBox spaceships aSpaceship anotherSpaceship actualSpaceship normalModifier reversalModifier |
+    
+    aSpaceship := Spaceship createWithId: 1.
+    anotherSpaceship := Spaceship createWithId: 2.
+    spaceships := OrderedCollection with: aSpaceship with: anotherSpaceship.
+    actualSpaceship := spaceships removeFirst.
+
+    cards := {
+        1 -> Acceleration.
+        2 -> Speed.
+        3 -> Repeat.
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+    
+    aCardBox := CardBox createWith: aDeck.
+    normalModifier := NormalModifier new.
+    reversalModifier := ReversalModifier new.
+    
+    aCardBox applyEffect: spaceships and: actualSpaceship through: normalModifier.
+    aCardBox applyEffect: spaceships and: actualSpaceship through: normalModifier.
+    aCardBox applyEffect: spaceships and: actualSpaceship through: normalModifier.
+    
+    self assert: actualSpaceship cards size equals: 3.
+    
+    aCardBox applyEffect: spaceships and: actualSpaceship through: reversalModifier.
+    
+    self assert: actualSpaceship cards size equals: 2.
+]

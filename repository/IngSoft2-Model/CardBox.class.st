@@ -22,6 +22,14 @@ CardBox >> applyNormalEffect: spaceships and: actualSpaceship [
 	actualSpaceship obtain: aCard
 ]
 
+{ #category : 'as yet unclassified' }
+CardBox >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship cards ifNotEmpty: [
+        | randomCard |
+        randomCard := actualSpaceship cards atRandom.
+        actualSpaceship removeThis: randomCard ].
+]
+
 { #category : 'initialization' }
 CardBox >> initializeWith: aDeck [ 
 	deck := aDeck
