@@ -262,3 +262,34 @@ BoxTest >> test010HasApplyNormalEffectMethod [
     
     self assert: (box respondsTo: #applyNormalEffect:and:).
 ]
+
+{ #category : 'tests' }
+BoxTest >> test011BoxHasApplyReversedEffectDefault [
+    | box modifier spaceships actualSpaceship |
+    
+    box := NormalBox new.
+    modifier := ReversalModifier new.
+    spaceships := OrderedCollection new.
+    actualSpaceship := Spaceship createWithId: 1.
+    
+    "NormalBox no tiene efecto, ni normal ni revertido"
+    box applyEffect: spaceships and: actualSpaceship through: modifier.
+    
+    self assert: actualSpaceship position equals: 1.  "No se movió"
+]
+
+{ #category : 'tests' }
+BoxTest >> test012BlackHoleReversedMovesForward [
+    | blackHole modifier spaceships actualSpaceship |
+    
+    blackHole := BlackHole new.
+    modifier := ReversalModifier new.
+    spaceships := OrderedCollection new.
+    actualSpaceship := Spaceship createWithId: 1.
+    actualSpaceship move: 10.  "Posición inicial: 11"
+    
+    blackHole applyEffect: spaceships and: actualSpaceship through: modifier.
+    
+    "BlackHole revertido: mueve +4 en vez de -4"
+    self assert: actualSpaceship position equals: 15.  "11 + 4"
+]

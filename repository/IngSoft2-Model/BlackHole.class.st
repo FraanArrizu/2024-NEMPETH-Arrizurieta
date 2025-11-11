@@ -10,3 +10,8 @@ BlackHole >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move: -4.
 ]
+
+{ #category : 'as yet unclassified' }
+BlackHole >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: 4.
+]

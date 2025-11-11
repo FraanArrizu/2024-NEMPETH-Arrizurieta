@@ -19,6 +19,11 @@ Box >> applyNormalEffect: spaceships and: actualSpaceship [
     self subclassResponsibility.
 ]
 
+{ #category : 'as yet unclassified' }
+Box >> applyReversedEffect: spaceships and: actualSpaceship [
+    self applyNormalEffect: spaceships and: actualSpaceship.
+]
+
 { #category : 'accessing' }
 Box >> position [
 
