@@ -11,3 +11,9 @@ HyperSpaceJump >> applyNormalEffect: spaceships and: actualSpaceship [
 	actualSpaceship move: 4.
 	actualSpaceship updateShield: -1
 ]
+
+{ #category : 'as yet unclassified' }
+HyperSpaceJump >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: -4.
+    actualSpaceship updateShield: 1.
+]

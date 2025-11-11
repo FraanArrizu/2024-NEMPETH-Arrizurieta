@@ -27,6 +27,15 @@ HyperJump >> applyNormalEffect: spaceships and: actualSpaceship [
 	index := index + 1
 ]
 
+{ #category : 'as yet unclassified' }
+HyperJump >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: ((collectionOfUnits at: index) toParsec // parsecsToBoxesRatio) negated.
+    
+    index = collectionOfUnits size ifTrue: [ index := 0 ].
+    
+    index := index + 1.
+]
+
 { #category : 'initialization' }
 HyperJump >> initializeWith: boardLength and: aRatio [
 

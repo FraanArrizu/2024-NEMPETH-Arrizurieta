@@ -413,3 +413,57 @@ BoxTest >> test016CardBoxReversedDiscardsRandomCard [
     
     self assert: actualSpaceship cards size equals: 2.
 ]
+
+{ #category : 'tests' }
+BoxTest >> test017LoadedHyperJumpReversedMovesBackward [
+    | hyperJump normalModifier reversalModifier actualSpaceship1 actualSpaceship2 parsec |
+    
+    parsec := Parsec createWith: 6.
+    
+    hyperJump := LoadedHyperJump createWith: 1 andParsecsToBoxesRatio: 2.
+    hyperJump addParsecs: (OrderedCollection with: parsec).
+    
+    normalModifier := NormalModifier new.
+    reversalModifier := ReversalModifier new.
+    
+    actualSpaceship1 := Spaceship createWithId: 1.
+    actualSpaceship1 move: 4.  "Posición 5"
+    
+    actualSpaceship2 := Spaceship createWithId: 2.
+    actualSpaceship2 move: 4.  "Posición 5"
+    
+    "Normal: 6 parsecs / 2 = 3 boxes → pos 8"
+    hyperJump applyEffect: OrderedCollection new and: actualSpaceship1 through: normalModifier.
+    self assert: actualSpaceship1 position equals: 8.
+    
+    "Revertido: -3 boxes → pos 2"
+    hyperJump applyEffect: OrderedCollection new and: actualSpaceship2 through: reversalModifier.
+    self assert: actualSpaceship2 position equals: 2.
+]
+
+{ #category : 'tests' }
+BoxTest >> test018HyperSpaceJumpReversedMovesBackwardAndGainsShield [
+    | hyperSpaceJump normalModifier reversalModifier actualSpaceship1 actualSpaceship2 |
+    
+    hyperSpaceJump := HyperSpaceJump new.
+    normalModifier := NormalModifier new.
+    reversalModifier := ReversalModifier new.
+    
+    actualSpaceship1 := Spaceship createWithId: 1.
+    actualSpaceship1 move: 10.  "Posición 11"
+    "Shield inicial: 3"
+    
+    actualSpaceship2 := Spaceship createWithId: 2.
+    actualSpaceship2 move: 10.  "Posición 11"
+    "Shield inicial: 3"
+    
+    "Normal: +4 movimiento, -1 shield → pos 15, shield 2 (3 - 1)"
+    hyperSpaceJump applyEffect: OrderedCollection new and: actualSpaceship1 through: normalModifier.
+    self assert: actualSpaceship1 position equals: 15.
+    self assert: actualSpaceship1 shield equals: 2.
+    
+    "Revertido: -4 movimiento, +1 shield → pos 7, shield 4 (3 + 1)"
+    hyperSpaceJump applyEffect: OrderedCollection new and: actualSpaceship2 through: reversalModifier.
+    self assert: actualSpaceship2 position equals: 7.
+    self assert: actualSpaceship2 shield equals: 4.
+]

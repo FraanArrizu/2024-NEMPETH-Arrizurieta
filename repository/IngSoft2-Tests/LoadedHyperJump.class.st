@@ -24,6 +24,11 @@ LoadedHyperJump >> addParsecs: aCollectionOfParsecs [
 ]
 
 { #category : 'accessing' }
+LoadedHyperJump >> applyEffect: spaceships and: actualSpaceship through: aModifier [
+    aModifier applyEffectOf: self on: spaceships and: actualSpaceship.
+]
+
+{ #category : 'accessing' }
 LoadedHyperJump >> applyNormalEffect: spaceships and: affectedSpaceship [
 
 	affectedSpaceship move: ((collectionOfParsecs at: index) toParsec) // parsecsToBoxesRatio .
@@ -32,6 +37,15 @@ LoadedHyperJump >> applyNormalEffect: spaceships and: affectedSpaceship [
 		index := 0 ].
 	
 	index := index + 1
+]
+
+{ #category : 'as yet unclassified' }
+LoadedHyperJump >> applyReversedEffect: spaceships and: affectedSpaceship [
+    affectedSpaceship move: (((collectionOfParsecs at: index) toParsec) // parsecsToBoxesRatio) negated.
+    
+    index = collectionOfParsecs size ifTrue: [ index := 0 ].
+    
+    index := index + 1.
 ]
 
 { #category : 'initialization' }
