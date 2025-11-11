@@ -15,6 +15,17 @@ Box >> applyEffect: spaceships and: actualSpaceship [
 ]
 
 { #category : 'accessing' }
+Box >> applyEffect: spaceships and: actualSpaceship through: aModifier [
+
+	aModifier applyEffectOf: self on: spaceships and: actualSpaceship.
+]
+
+{ #category : 'as yet unclassified' }
+Box >> applyNormalEffect: spaceships and: actualSpaceship [
+    self applyEffect: spaceships and: actualSpaceship.
+]
+
+{ #category : 'accessing' }
 Box >> position [
 
 	^ position

@@ -246,3 +246,12 @@ BoxTest >> test009WhenCardBoxApplyEffectThenSpaceshipAddACardOnItsPrivateDeck [
     
     self assert: (actualSpaceship cards size) equals: 3.
 ]
+
+{ #category : 'tests' }
+BoxTest >> test010HasApplyNormalEffectMethod [
+    | box |
+    
+    box := NormalBox new.
+    
+    self assert: (box respondsTo: #applyNormalEffect:and:).
+]

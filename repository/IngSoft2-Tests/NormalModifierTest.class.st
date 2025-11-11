@@ -34,3 +34,24 @@ NormalModifierTest >> test003testDelegatesToBoxNormalEffect [
     
     self assert: box normalEffectWasCalled.
 ]
+
+{ #category : 'tests' }
+NormalModifierTest >> test004RespondsToApplyEffectThrough [
+    | box |
+    
+    box := NormalBox new.
+    
+    self assert: (box respondsTo: #applyEffect:and:through:).
+]
+
+{ #category : 'tests' }
+NormalModifierTest >> test005DelegatesToModifier [
+    | box modifier |
+    
+    box := NormalBox new.
+    modifier := MockModifier new.
+    
+    box applyEffect: OrderedCollection new and: nil through: modifier.
+    
+    self assert: modifier applyEffectOfWasCalled.
+]
