@@ -1,15 +1,16 @@
 Class {
-	#name : #GameTest,
-	#superclass : #TestCase,
-	#category : #'IngSoft2-Tests'
+	#name : 'GameTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 GameTest >> should: anErrorBlock raise: anErrorClass withMessage: anErrorMessage [ 
 	self should: anErrorBlock raise: anErrorClass withExceptionDo: [ :error | self assert: error messageText equals: anErrorMessage ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test001WhenSpaceshipsMovesThreeBoxesOnAThreeBoxesBoardWithOneLapToWinThenTheSpaceshipWins [
 
 	| dices aDie cards aDeck aBoxOne aWormholeOne aWormholeTwo aPath aBoard aGame winner |
@@ -48,7 +49,7 @@ GameTest >> test001WhenSpaceshipsMovesThreeBoxesOnAThreeBoxesBoardWithOneLapToWi
 	self assert: winner id equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test002WhenGameIsCreatedWithLessThanOneLapToWinThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aPath aBoard |
@@ -78,7 +79,7 @@ GameTest >> test002WhenGameIsCreatedWithLessThanOneLapToWinThenThrowError [
 		withMessage: 'Laps to win should be greater than zero'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test003WhenSpaceshipsCompleteTwoLapsOnATwoLapCompletedGameThenTheSpaceshipWins [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aWormholeOne aWormholeTwo aPath aBoard aGame winner |
@@ -120,7 +121,7 @@ GameTest >> test003WhenSpaceshipsCompleteTwoLapsOnATwoLapCompletedGameThenTheSpa
 	self assert: winner id equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test006WhenASpaceshipIsOnSecondWormholeThenSpaceshipMovesToPositionOne [
 
 	| spaceships aSpaceship anotherSpaceship aWormholeOne aWormholeTwo aBoxOne aPath aBoard aBoxTwo aBoxThree boxToCheck actualSpaceship |
@@ -158,7 +159,7 @@ GameTest >> test006WhenASpaceshipIsOnSecondWormholeThenSpaceshipMovesToPositionO
 	self assert: aSpaceship position equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test007WhenASpaceshipWinsThenPositionOfAnotherSpaceshipIsOne [
 
 	| dices aDie cards aDeck aWormholeOne aWormholeTwo aBoxOne aPath aBoard aGame |
@@ -199,7 +200,7 @@ GameTest >> test007WhenASpaceshipWinsThenPositionOfAnotherSpaceshipIsOne [
 		equals: (OrderedCollection with: 1 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test008WhenGameEndedThenReturnTheFinishSpaceshipPositionOnBoard [
 
 	| dices aDie cards aDeck aWormholeOne aWormholeTwo aNormalBoxOne aPath aBoard aGame aNormalBoxTwo aNormalBoxThree |
@@ -253,7 +254,7 @@ GameTest >> test008WhenGameEndedThenReturnTheFinishSpaceshipPositionOnBoard [
 		equals: (OrderedCollection with: 3 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test009WhenGameIsCreatedWithLessThanTwoSpaceshipsThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aPath aBoard |
@@ -279,7 +280,7 @@ GameTest >> test009WhenGameIsCreatedWithLessThanTwoSpaceshipsThenThrowError [
 		withMessage: 'Game should have a least two spaceships'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test010WhenGameIsCreatedWithoutDicesThenThrowError [
 
 	| dices cards aDeck aNormalBoxOne aNormalBoxTwo aPath aBoard |
@@ -305,7 +306,7 @@ GameTest >> test010WhenGameIsCreatedWithoutDicesThenThrowError [
 		withMessage: 'Game should have a least one die'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test011WhenSpaceshipsMoveThreeBoxesThenASpaceshipWins [
 
 	| dices aDie cards aDeck aWormholeOne aWormholeTwo aBoxOne aPath aBoard aGame winner |
@@ -343,7 +344,7 @@ GameTest >> test011WhenSpaceshipsMoveThreeBoxesThenASpaceshipWins [
 	self assert: winner id equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test014WhenSpaceshipMoveToAPositionWhereThereIsNotAnotherSpaceshipThenTheShieldIsNotAffected [
 
 	| dices aDie cards aDeck aBoxOne aBoxTwo aBoxThree aWormholeOne aWormholeTwo aPath aBoard aGame |
@@ -383,7 +384,7 @@ GameTest >> test014WhenSpaceshipMoveToAPositionWhereThereIsNotAnotherSpaceshipTh
 		equals: (OrderedCollection with: 3 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test015WhenTwoSpaceshipsBattleIfThereIsATieThenTheSecondSpaceshipLoseOneShieldAndRestartPositionOne [
 
 	| dices aDie cards aDeck aBoxOne aBoxTwo aBoxThree aWormholeOne aWormholeTwo aPath aBoard aGame |
@@ -424,7 +425,7 @@ GameTest >> test015WhenTwoSpaceshipsBattleIfThereIsATieThenTheSecondSpaceshipLos
 		equals: (OrderedCollection with: 2 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test016WhenBothSpaceshipsAreInPositionOneThenTheSpaceshipsAreNotAffectedThisIsASafeZone [
 
 	| dices aDie cards aDeck aBoxOne aBoxTwo aBoxThree aPath aBoard aGame |
@@ -465,7 +466,7 @@ GameTest >> test016WhenBothSpaceshipsAreInPositionOneThenTheSpaceshipsAreNotAffe
 		equals: (OrderedCollection with: 3 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test017WhenPassTurnThenTheSpaceshipRecoverAllShields [
 
 	| dices aDie cards aDeck aBoxOne aBoxTwo aBoxThree aWormholeOne aWormholeTwo aPath aBoard aGame |
@@ -520,7 +521,7 @@ GameTest >> test017WhenPassTurnThenTheSpaceshipRecoverAllShields [
 		equals: (OrderedCollection with: 3 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test018WhenPassTurnThenTheSpaceshipStaysOnTheSamePlace [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aWormholeOne aWormholeTwo aPath aBoard aGame |
@@ -581,7 +582,7 @@ GameTest >> test018WhenPassTurnThenTheSpaceshipStaysOnTheSamePlace [
 		equals: (OrderedCollection with: 5 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test019CheckTheRankingOfSpaceshipsInTheGame [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aWormholeOne aWormholeTwo aPath aBoard aGame |
@@ -630,7 +631,7 @@ GameTest >> test019CheckTheRankingOfSpaceshipsInTheGame [
 		equals: (OrderedCollection with: 2 with: 3 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test020CanNotBattleAfterASpaceshipHasWon [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame |
@@ -671,7 +672,7 @@ GameTest >> test020CanNotBattleAfterASpaceshipHasWon [
 		equals: (OrderedCollection with: 3 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test021WhenOnABattleTheSpaceshipsThrowTheSameThenTheOneWhichArrivedLastLose [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame |
@@ -714,7 +715,7 @@ GameTest >> test021WhenOnABattleTheSpaceshipsThrowTheSameThenTheOneWhichArrivedL
 		equals: (OrderedCollection with: 3 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test022SpaceshipsStartWithTwoCardsWhenGameStarts [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame |
@@ -758,7 +759,7 @@ GameTest >> test022SpaceshipsStartWithTwoCardsWhenGameStarts [
 				 with: 2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test023WhenGameStartsThenItHasNotPermanentCardsPlayed [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame |
@@ -798,7 +799,7 @@ GameTest >> test023WhenGameStartsThenItHasNotPermanentCardsPlayed [
 		equals: OrderedCollection new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test024WhenGameStartsThenThereIsNoLastCardPlay [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame |
@@ -836,7 +837,7 @@ GameTest >> test024WhenGameStartsThenThereIsNoLastCardPlay [
 	self assert: aGame getLastCardPlayed isNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test025WhenAnAccelerationCardIsPlayedThenAllThrowsIncreaseByOne [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -889,7 +890,7 @@ GameTest >> test025WhenAnAccelerationCardIsPlayedThenAllThrowsIncreaseByOne [
 	self assert: aGame getPermanentCardPlayed size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test026WhenAnSpeedCardIsPlayedThenTheAffectedSpaceshipThrowsIncreaseByOne [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -946,7 +947,7 @@ GameTest >> test026WhenAnSpeedCardIsPlayedThenTheAffectedSpaceshipThrowsIncrease
 	self assert: aGame getPermanentCardPlayed size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test027WhenAnCancelationCardIsPlayedAndTheAffectedCardIsSpeedThenTheAffectedSpaceshipsDecreaseHisThrowByOne [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -1028,7 +1029,7 @@ GameTest >> test027WhenAnCancelationCardIsPlayedAndTheAffectedCardIsSpeedThenThe
 	self assert: aGame getPermanentCardPlayed size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test028WhenAnCancelationCardIsPlayedAndTheAffectedCardIsAccelerationThenAllSpaceshipsDecreaseHisThrowByOne [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1111,7 +1112,7 @@ GameTest >> test028WhenAnCancelationCardIsPlayedAndTheAffectedCardIsAcceleration
 	self assert: aGame getPermanentCardPlayed size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test029WhenAnMercenaryCardIsPlayedThenAlliedSpaceshipsNotFight [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1161,7 +1162,7 @@ GameTest >> test029WhenAnMercenaryCardIsPlayedThenAlliedSpaceshipsNotFight [
 		equals: (OrderedCollection with: 2 with: 2 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test030WhenAMercenaryCardIsPlayedSpaceshipAndHisAlliedLoseThenLoseOneShieldBoth [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1222,7 +1223,7 @@ GameTest >> test030WhenAMercenaryCardIsPlayedSpaceshipAndHisAlliedLoseThenLoseOn
 		equals: (OrderedCollection with: 2 with: 2 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test031WhenAnCancelationCardIsPlayedAndTheAffectedCardIsMercenaryThenTheAffectedSpaceshipLoseHisMercenary [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1307,7 +1308,7 @@ GameTest >> test031WhenAnCancelationCardIsPlayedAndTheAffectedCardIsMercenaryThe
 		equals: (OrderedCollection with: 2 with: 2 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test032WhenARepeatCardIsPlayAndLastBoxIsNormalBoxThenNoEffectApplied [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1352,7 +1353,7 @@ GameTest >> test032WhenARepeatCardIsPlayAndLastBoxIsNormalBoxThenNoEffectApplied
 		equals: (OrderedCollection with: 2 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test033WhenARepeatCardIsPlayAndLastBoxIsBlackholeThenTheAffectedSpaceshipMoveFourBoxesBackwards [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aBlackHole aPath aBoard aGame cardArguments |
@@ -1399,7 +1400,7 @@ GameTest >> test033WhenARepeatCardIsPlayAndLastBoxIsBlackholeThenTheAffectedSpac
 		equals: (OrderedCollection with: 1 with: 2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test034WhenARepeatCardIsPlayAndLastBoxIsHyperSpaceJumpThenTheAffectedSpaceshipMoveFourBoxesForwardAndLoseOneShield [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aHyperSpaceJump aPath aBoard aGame cardArguments |
@@ -1450,7 +1451,7 @@ GameTest >> test034WhenARepeatCardIsPlayAndLastBoxIsHyperSpaceJumpThenTheAffecte
 		equals: (OrderedCollection with: 2 with: 2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test035WhenARepeatCardIsPlayAndLastBoxIsMoonWalkThenTheAffectedSpaceshipMoveTwoBoxesBackWards [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aMoonWalk aPath aBoard aGame cardArguments |
@@ -1497,7 +1498,7 @@ GameTest >> test035WhenARepeatCardIsPlayAndLastBoxIsMoonWalkThenTheAffectedSpace
 		equals: (OrderedCollection with: 3 with: 2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test036WhenARepeatCardIsPlayAndLastBoxIsAtomicbombThenAllSpaceshipLoseOneShieldAndReturnToPositionOne [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive anAtomicBomb aPath aBoard aGame cardArguments |
@@ -1553,7 +1554,7 @@ GameTest >> test036WhenARepeatCardIsPlayAndLastBoxIsAtomicbombThenAllSpaceshipLo
 		equals: (OrderedCollection with: 1 with: 1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test037WhenARepeatCardIsPlayAndLastBoxIsHyperJumpThenTheAffectedSpaceshipMovesFowardAnAmountOfParsecs [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aHyperJump aPath aBoard aGame cardArguments parsecOne lightYearOne lightYearTwo |
@@ -1604,7 +1605,7 @@ GameTest >> test037WhenARepeatCardIsPlayAndLastBoxIsHyperJumpThenTheAffectedSpac
 		equals: (OrderedCollection with: 6 with: 5)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test038WhenARedoCardIsPlayAndLastCardIsSpeedCardThenTheAffectedSpaceshipAddsOneToItsMove [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1659,7 +1660,7 @@ GameTest >> test038WhenARedoCardIsPlayAndLastCardIsSpeedCardThenTheAffectedSpace
 		equals: (OrderedCollection with: 2 with: 4)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test039WhenARedoCardIsPlayAndLastCardIsAccelerationCardThenAllSpaceshipAddOneToTheirMove [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1715,7 +1716,7 @@ GameTest >> test039WhenARedoCardIsPlayAndLastCardIsAccelerationCardThenAllSpaces
 	self assert: aGame getPermanentCardPlayed size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test040WhenARedoCardIsPlayAndLastCardIsCancellationCardThenRemoveTheCardSelected [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1793,7 +1794,7 @@ GameTest >> test040WhenARedoCardIsPlayAndLastCardIsCancellationCardThenRemoveThe
 	self assert: aGame getPermanentCardPlayed size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test041WhenARedoCardIsPlayAndLastCardIsRepeatCardThenSpaceshipTargetApplyTheLastBoxPlayed [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aBlackhole aPath aBoard aGame cardArguments |
@@ -1855,7 +1856,7 @@ GameTest >> test041WhenARedoCardIsPlayAndLastCardIsRepeatCardThenSpaceshipTarget
 	self assert: aGame getPermanentCardPlayed size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test042WhenARedoCardIsPlayAndLastCardIsMercenaryCardThenSpaceshipGetAMercenary [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aPath aBoard aGame cardArguments |
@@ -1925,7 +1926,7 @@ GameTest >> test042WhenARedoCardIsPlayAndLastCardIsMercenaryCardThenSpaceshipGet
 	self assert: aGame getPermanentCardPlayed size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test043WhenASpaceshipIsInACardBoxThenGetsACard [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aCardBoxOne aCardBoxTwo aPath aBoard aGame |
@@ -1975,7 +1976,7 @@ GameTest >> test043WhenASpaceshipIsInACardBoxThenGetsACard [
 		equals: (OrderedCollection with: 3 with: 2 with: 3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test044WhenASpaceshipTriesToPlayAccelerationWhenItIsNotItsTurnThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2014,7 +2015,7 @@ GameTest >> test044WhenASpaceshipTriesToPlayAccelerationWhenItIsNotItsTurnThenTh
 		withMessage: 'A spaceship is trying to play a permanent card and it is not its turn'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test045WhenASpaceshipTriesToPlayACardThatDoesNotHaveThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2053,7 +2054,7 @@ GameTest >> test045WhenASpaceshipTriesToPlayACardThatDoesNotHaveThenThrowError [
 		withMessage: 'A spaceship is trying to play a card that does not have'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test046WhenASpaceshipTriesToPlaySpeedWhenItIsNotItsTurnThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2093,7 +2094,7 @@ GameTest >> test046WhenASpaceshipTriesToPlaySpeedWhenItIsNotItsTurnThenThrowErro
 		withMessage: 'A spaceship is trying to play a permanent card and it is not its turn'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test047WhenASpaceshipTriesToPlayMercenaryWhenItIsNotItsTurnThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2133,7 +2134,7 @@ GameTest >> test047WhenASpaceshipTriesToPlayMercenaryWhenItIsNotItsTurnThenThrow
 		withMessage: 'A spaceship is trying to play a permanent card and it is not its turn'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test048WhenASpaceshipTriesToPlayMercenaryAndChooseItselfAsMercenaryThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2173,7 +2174,7 @@ GameTest >> test048WhenASpaceshipTriesToPlayMercenaryAndChooseItselfAsMercenaryT
 		withMessage: 'A spaceship can not choose itself as mercenary'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test049WhenASpaceshipTriesToPlayMercenaryAndChooseOneAlreadyChosenAsMercenaryThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2221,7 +2222,7 @@ GameTest >> test049WhenASpaceshipTriesToPlayMercenaryAndChooseOneAlreadyChosenAs
 		withMessage: 'A spaceship chose a mercenary already chosen'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test050WhenASpaceshipThatDoesNotExistTriesToPlayACardThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |
@@ -2260,7 +2261,7 @@ GameTest >> test050WhenASpaceshipThatDoesNotExistTriesToPlayACardThenThrowError 
 		withMessage: 'The spaceship that wants to play the card does not exist'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 GameTest >> test051WhenASpaceshipChooseATargetSpaceshipThatDoesNotExistThenThrowError [
 
 	| dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aPath aBoard aGame cardArguments |

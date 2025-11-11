@@ -1,18 +1,19 @@
 Class {
-	#name : #Deck,
-	#superclass : #Object,
+	#name : 'Deck',
+	#superclass : 'Object',
 	#instVars : [
 		'idForCard'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #operations }
+{ #category : 'operations' }
 Deck class >> create [
 	^ self new initializeWith
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Deck >> giveACard [
     | aCard randomValue cardMapping |
     cardMapping := {
@@ -31,7 +32,7 @@ Deck >> giveACard [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Deck >> initializeWith [
 	idForCard := 1
 ]

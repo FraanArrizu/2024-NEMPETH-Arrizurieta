@@ -1,19 +1,20 @@
 Class {
-	#name : #MoonWalk,
-	#superclass : #Box,
+	#name : 'MoonWalk',
+	#superclass : 'Box',
 	#instVars : [
 		'boxesToMove'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MoonWalk class >> createWith: boxesToMoveBackward [
 
 	^ self new initializeWith: boxesToMoveBackward.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MoonWalk >> applyEffect: spaceships and: actualSpaceship [
 
 	spaceships do: [ :aSpaceship |
@@ -21,7 +22,7 @@ MoonWalk >> applyEffect: spaceships and: actualSpaceship [
 			aSpaceship move: -1 * boxesToMove ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MoonWalk >> initializeWith: boxesToMoveBackward [
 
 	boxesToMove := boxesToMoveBackward.
