@@ -2497,3 +2497,493 @@ GameTest >> test057CancellationRemovesReversal [
 
     self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 1 with: 1).
 ]
+
+{ #category : 'tests' }
+GameTest >> test058ReversalCardInvertsMoonWalkEffect [
+    | dices aDie cards aDeck boxes aMoonWalk aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 1 with: 4).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aMoonWalk := MoonWalk createWith: 2.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aMoonWalk.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 5.
+    
+    aGame playCard: cardArguments.
+    
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 2 with: 1).
+    
+    aGame playTurn.
+    
+    "MoonWalk revertido mueve a LOS DEMAS +2"
+    "Nave 2: NO se mueve (es la que cayo) → pos 5"
+    "Nave 1: SÍ se mueve +2 → 2 + 2 = 4"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 4 with: 5).
+]
+
+{ #category : 'tests' }
+GameTest >> test059ReversalCardInvertsBlackHoleEffect [
+    | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 4).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aBlackHole := BlackHole new.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aBlackHole.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 5.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 5).
+    
+    aGame playTurn.
+    
+    "Nave 1: pos 9, Nave 2: pos 1"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 9 with: 1).
+]
+
+{ #category : 'tests' }
+GameTest >> test060ReversalCardInvertsWormholeEffect [
+    | dices aDie cards aDeck boxes wormholeStart wormholeEnd aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 7).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    wormholeStart := Wormhole new.
+    wormholeEnd := Wormhole new.
+    wormholeStart associateWith: wormholeEnd.
+    wormholeEnd associateWith: wormholeStart.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        wormholeStart.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        wormholeEnd.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    wormholeStart position: 8.
+    wormholeEnd position: 13.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 8.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 8).
+    
+    aGame playTurn.
+    
+    "Wormhole normal: pos 8 → 13 (move: 13-8 = +5 → pos 13)"
+    "Wormhole revertido: pos 8 (move: 8-13 = -5 → pos 3)"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 3 with: 1).
+]
+
+{ #category : 'tests' }
+GameTest >> test061ReversalCardInvertsHyperSpaceJumpEffect [
+    | dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aHyperSpaceJump aPath aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 1).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aNormalBoxOne := NormalBox new.
+    aNormalBoxTwo := NormalBox new.
+    aNormalBoxThree := NormalBox new.
+    aNormalBoxFour := NormalBox new.
+    aNormalBoxFive := NormalBox new.
+    aHyperSpaceJump := HyperSpaceJump new.
+    
+    aPath := OrderedCollection
+        with: aNormalBoxOne
+        with: aHyperSpaceJump
+        with: aNormalBoxTwo
+        with: aNormalBoxThree
+        with: aNormalBoxFour
+        with: aNormalBoxFive.
+
+    aBoard := Board createWith: aPath.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 3.
+
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 1 with: 1).
+    self assert: aGame checkShieldsOfSpaceships equals: (OrderedCollection with: 3 with: 3).
+
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 2.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 2).
+
+    aGame playTurn.
+
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 1 with: 1).
+    self assert: aGame checkShieldsOfSpaceships equals: (OrderedCollection with: 4 with: 3).
+]
+
+{ #category : 'tests' }
+GameTest >> test062ReversalCardInvertsHyperJumpEffect [
+    | dices aDie cards aDeck boxes aHyperJump aBoard aGame cardArguments parsec |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aHyperJump := LoadedHyperJump createWith: 1 andParsecsToBoxesRatio: 1.
+    parsec := Parsec createWith: 3.
+    aHyperJump addParsecs: (OrderedCollection with: parsec).
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aHyperJump.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 4).
+    
+    aGame playTurn.
+    
+    "HyperJump normal: 3 parsecs * ratio 1 = +3 boxes → pos 7"
+    "HyperJump revertido: 3 parsecs * ratio 1 = -3 boxes → pos 1"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 1 with: 1).
+]
+
+{ #category : 'tests' }
+GameTest >> test063ReversalCardInvertsCardBoxEffect [
+    | dices aDie cards aDeck boxes aCardBox aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3 with: 3).
+    dices := OrderedCollection with: aDie.
+
+    cards := { 
+        (1 -> Reversal).
+        (2 -> Speed).
+        (3 -> Speed).
+        (4 -> Acceleration).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aCardBox := CardBox createWith: aDeck.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aCardBox.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    self assert: aGame checkAmountOfCardsOfSpaceships equals: (OrderedCollection with: 2 with: 2).
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: aGame checkAmountOfCardsOfSpaceships equals: (OrderedCollection with: 1 with: 2).
+    
+    self assert: (aGame isReversedAt: 4).
+    
+    aGame playTurn.
+    
+    self assert: aGame checkAmountOfCardsOfSpaceships equals: (OrderedCollection with: 0 with: 2).
+    
+    aGame playTurn.
+    
+    self assert: aGame checkAmountOfCardsOfSpaceships equals: (OrderedCollection with: 0 with: 1).
+]
+
+{ #category : 'tests' }
+GameTest >> test064ReversalPersistsBetweenTurns [
+    | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3 with: 1 with: 3).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aBlackHole := BlackHole new.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aBlackHole.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 4).
+    self assert: aGame getPermanentCardPlayed size equals: 1.
+    
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 1).
+    
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 2).
+    
+    self assert: (aGame isReversedAt: 4).
+    self assert: aGame getPermanentCardPlayed size equals: 1.
+    
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 3 with: 2).
+    
+    self assert: (aGame isReversedAt: 4).
+    self assert: aGame getPermanentCardPlayed size equals: 1.
+]
+
+{ #category : 'tests' }
+GameTest >> test065ReversalInInvalidPositionRaisesError [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 10.
+    
+    self should: [ aGame playCard: cardArguments ] raise: Error.
+]
+
+{ #category : 'tests' }
+GameTest >> test066ReversalInZeroOrNegativePositionRaisesError [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    dices := OrderedCollection with: aDie.
+
+    cards := { 
+        (1 -> Reversal).
+        (2 -> Reversal).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    "Intentamos jugar Reversal en posición 0"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 0.
+    
+    self should: [ aGame playCard: cardArguments ] raise: Error.
+    
+    "Intentamos jugar Reversal en posición -5"
+    cardArguments at: 'idSpaceship' put: 2.
+    cardArguments at: 'idCardToUse' put: 2.
+    cardArguments at: 'targetPosition' put: -5.
+    
+    self should: [ aGame playCard: cardArguments ] raise: Error.
+]
+
+{ #category : 'tests' }
+GameTest >> test067CancellationWithNoReversalRaisesError [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments |
+    
+    aDie := LoadedDie of: 10.
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Cancellation) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+    
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    self assert: aGame getPermanentCardPlayed size equals: 0.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idTargetCard' put: 999.
+    
+    self should: [ aGame playCard: cardArguments ] raise: Error.
+]
