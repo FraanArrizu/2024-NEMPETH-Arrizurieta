@@ -275,7 +275,7 @@ BoxTest >> test011BoxHasApplyReversedEffectDefault [
     "NormalBox no tiene efecto, ni normal ni revertido"
     box applyEffect: spaceships and: actualSpaceship through: modifier.
     
-    self assert: actualSpaceship position equals: 1.  "No se movió"
+    self assert: actualSpaceship position equals: 1.
 ]
 
 { #category : 'tests' }
@@ -286,7 +286,7 @@ BoxTest >> test012BlackHoleReversedMovesForward [
     modifier := ReversalModifier new.
     spaceships := OrderedCollection new.
     actualSpaceship := Spaceship createWithId: 1.
-    actualSpaceship move: 10.  "Posición inicial: 11"
+    actualSpaceship move: 10.
     
     blackHole applyEffect: spaceships and: actualSpaceship through: modifier.
     
@@ -305,9 +305,9 @@ BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
     spaceship2 := Spaceship createWithId: 2.
     actualSpaceship := Spaceship createWithId: 3.
     
-    spaceship1 move: 5.  "Posición 6"
-    spaceship2 move: 8.  "Posición 9"
-    actualSpaceship move: 10.  "Posición 11"
+    spaceship1 move: 5.
+    spaceship2 move: 8.
+    actualSpaceship move: 10.
     
     spaceships := OrderedCollection with: spaceship1 with: spaceship2.
     
@@ -316,7 +316,6 @@ BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
     "MoonWalk revertido: mueve todas +3 en vez de -3"
     self assert: spaceship1 position equals: 9.   "6 + 3"
     self assert: spaceship2 position equals: 12.  "9 + 3"
-    "actualSpaceship no está en la colección, no se afecta"
 ]
 
 { #category : 'tests' }
@@ -328,7 +327,7 @@ BoxTest >> test014WormholeReversedMovesInOppositeDirection [
     wormholeStart associateWith: wormholeEnd.
     wormholeEnd associateWith: wormholeStart.
     
-    "wormholeStart esta en posición 3 y wormholeEnd en posicion 8"
+    "wormholeStart esta en pos 3 y wormholeEnd en pos 8"
     wormholeStart position: 3.
     wormholeEnd position: 8.
     
@@ -351,14 +350,13 @@ BoxTest >> test014WormholeReversedMovesInOppositeDirection [
 BoxTest >> test015AtomicBombReversedBehavesLikeNormal [
     | atomicBomb normalModifier reversalModifier spaceships1 spaceships2 spaceship1 spaceship2 actualSpaceship1 actualSpaceship2 |
     
-    "Creamos dos escenarios identicos"
     spaceship1 := Spaceship createWithId: 1.
-    spaceship1 move: 10.  "Pos 11"
-    spaceship1 updateShield: 2.  "3 shields"
+    spaceship1 move: 10.
+    spaceship1 updateShield: 2.
     
     spaceship2 := Spaceship createWithId: 1.
-    spaceship2 move: 10.  "Pos 11"
-    spaceship2 updateShield: 2.  "3 shields"
+    spaceship2 move: 10.
+    spaceship2 updateShield: 2.
     
     actualSpaceship1 := Spaceship createWithId: 2.
     actualSpaceship2 := Spaceship createWithId: 2.
@@ -370,10 +368,8 @@ BoxTest >> test015AtomicBombReversedBehavesLikeNormal [
     normalModifier := NormalModifier new.
     reversalModifier := ReversalModifier new.
     
-    "Aplicar con NormalModifier"
     atomicBomb applyEffect: spaceships1 and: actualSpaceship1 through: normalModifier.
     
-    "Aplicar con ReversalModifier"
     atomicBomb applyEffect: spaceships2 and: actualSpaceship2 through: reversalModifier.
     
     "AtomicBomb NO se revierte: mismo efecto"
@@ -427,10 +423,10 @@ BoxTest >> test017LoadedHyperJumpReversedMovesBackward [
     reversalModifier := ReversalModifier new.
     
     actualSpaceship1 := Spaceship createWithId: 1.
-    actualSpaceship1 move: 4.  "Posición 5"
+    actualSpaceship1 move: 4.
     
     actualSpaceship2 := Spaceship createWithId: 2.
-    actualSpaceship2 move: 4.  "Posición 5"
+    actualSpaceship2 move: 4.
     
     "Normal: 6 parsecs / 2 = 3 boxes → pos 8"
     hyperJump applyEffect: OrderedCollection new and: actualSpaceship1 through: normalModifier.
@@ -450,11 +446,11 @@ BoxTest >> test018HyperSpaceJumpReversedMovesBackwardAndGainsShield [
     reversalModifier := ReversalModifier new.
     
     actualSpaceship1 := Spaceship createWithId: 1.
-    actualSpaceship1 move: 10.  "Posición 11"
+    actualSpaceship1 move: 10.
     "Shield inicial: 3"
     
     actualSpaceship2 := Spaceship createWithId: 2.
-    actualSpaceship2 move: 10.  "Posición 11"
+    actualSpaceship2 move: 10.
     "Shield inicial: 3"
     
     "Normal: +4 movimiento, -1 shield → pos 15, shield 2 (3 - 1)"

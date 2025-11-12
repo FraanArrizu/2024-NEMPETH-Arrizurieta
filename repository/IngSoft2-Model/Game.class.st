@@ -10,7 +10,8 @@ Class {
 		'lastCardPlayed',
 		'movementByAcceleration',
 		'lastBox',
-		'board'
+		'board',
+		'activeReversals'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -64,6 +65,13 @@ Game >> addAcceleration [
 Game >> addPermanentCardPlayed: aCard [
 
 	permanentCardsPlayed add: aCard
+]
+
+{ #category : 'accessing' }
+Game >> addReversal: aReversal at: aPosition [
+    | reversalsAtPosition |
+    reversalsAtPosition := activeReversals at: aPosition ifAbsentPut: [ OrderedCollection new ].
+    reversalsAtPosition add: aReversal.
 ]
 
 { #category : 'as yet unclassified' }
@@ -162,6 +170,11 @@ Game >> createSpaceships: numberOfSpaceships [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> getBoardSize [
+    ^ board length
+]
+
+{ #category : 'as yet unclassified' }
 Game >> getIdOfSpaceshipAtTurn [
 
 	^ spaceships first id
@@ -182,12 +195,20 @@ Game >> initializeWith: numberOfSpaceships and: aCollectionOfDices and: aDeck an
 	
 	permanentCardsPlayed := OrderedCollection new.
 	movementByAcceleration := 0.
+	activeReversals := Dictionary new.
 	dices := aCollectionOfDices.
 	deck := aDeck.
 	board := aBoard.
 	lapsToWin := amountOfLapsToWin.
 	lastBox := NormalBox new.
 	spaceships := self createSpaceships: numberOfSpaceships.
+]
+
+{ #category : 'accessing' }
+Game >> isReversedAt: aPosition [
+    | reversalsAtPosition |
+    reversalsAtPosition := activeReversals at: aPosition ifAbsent: [ OrderedCollection new ].
+    ^ reversalsAtPosition size odd.
 ]
 
 { #category : 'as yet unclassified' }
@@ -199,7 +220,12 @@ Game >> mercenaryAvailabilityValidation: mercenarySpaceship [
 
 { #category : 'accessing' }
 Game >> modifierAt: aPosition [
-	^NormalModifier new.
+    | isReversed |
+    isReversed := self isReversedAt: aPosition.
+    Transcript show: 'modifierAt: ', aPosition asString, ' → isReversed: ', isReversed asString; cr.
+    ^ isReversed
+        ifTrue: [ ReversalModifier new ]
+        ifFalse: [ NormalModifier new ].
 ]
 
 { #category : 'as yet unclassified' }
@@ -282,6 +308,12 @@ Game >> removeMercenary: idOfMercenarySpaceship and: idOfActualSpaceship [
 Game >> removePermanentCardPlayed: aCard [ 
 	permanentCardsPlayed remove: aCard.
 	lastCardPlayed := Cancellation.
+]
+
+{ #category : 'removing' }
+Game >> removeReversal: aReversal [
+    activeReversals keysAndValuesDo: [ :position :reversals |
+        reversals removeAllSuchThat: [ :reversal | reversal id = aReversal id ] ].
 ]
 
 { #category : 'as yet unclassified' }
