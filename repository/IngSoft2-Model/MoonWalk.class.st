@@ -25,8 +25,7 @@ MoonWalk >> applyNormalEffect: spaceships and: actualSpaceship [
 { #category : 'as yet unclassified' }
 MoonWalk >> applyReversedEffect: spaceships and: actualSpaceship [
     spaceships do: [ :aSpaceship |
-        aSpaceship position ~= 1 ifTrue: [
-            aSpaceship move: boxesToMove ] ].
+        aSpaceship move: boxesToMove ].
 ]
 
 { #category : 'initialization' }

@@ -190,6 +190,11 @@ Game >> getPermanentCardPlayed [
 	^ permanentCardsPlayed
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> getSpaceships [
+    ^ spaceships
+]
+
 { #category : 'initialization' }
 Game >> initializeWith: numberOfSpaceships and: aCollectionOfDices and: aDeck and: aBoard andLapsToWin: amountOfLapsToWin [ 
 	
@@ -222,7 +227,6 @@ Game >> mercenaryAvailabilityValidation: mercenarySpaceship [
 Game >> modifierAt: aPosition [
     | isReversed |
     isReversed := self isReversedAt: aPosition.
-    Transcript show: 'modifierAt: ', aPosition asString, ' → isReversed: ', isReversed asString; cr.
     ^ isReversed
         ifTrue: [ ReversalModifier new ]
         ifFalse: [ NormalModifier new ].

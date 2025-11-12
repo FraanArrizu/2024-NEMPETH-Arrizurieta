@@ -264,7 +264,7 @@ BoxTest >> test010HasApplyNormalEffectMethod [
 ]
 
 { #category : 'tests' }
-BoxTest >> test011BoxHasApplyReversedEffectDefault [
+BoxTest >> test011NormalBoxHasApplyReversedEffectDefault [
     | box modifier spaceships actualSpaceship |
     
     box := NormalBox new.
@@ -272,7 +272,6 @@ BoxTest >> test011BoxHasApplyReversedEffectDefault [
     spaceships := OrderedCollection new.
     actualSpaceship := Spaceship createWithId: 1.
     
-    "NormalBox no tiene efecto, ni normal ni revertido"
     box applyEffect: spaceships and: actualSpaceship through: modifier.
     
     self assert: actualSpaceship position equals: 1.
@@ -290,8 +289,7 @@ BoxTest >> test012BlackHoleReversedMovesForward [
     
     blackHole applyEffect: spaceships and: actualSpaceship through: modifier.
     
-    "BlackHole revertido: mueve +4 en vez de -4"
-    self assert: actualSpaceship position equals: 15.  "11 + 4"
+    self assert: actualSpaceship position equals: 15.
 ]
 
 { #category : 'tests' }
@@ -313,9 +311,8 @@ BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
     
     moonWalk applyEffect: spaceships and: actualSpaceship through: modifier.
     
-    "MoonWalk revertido: mueve todas +3 en vez de -3"
-    self assert: spaceship1 position equals: 9.   "6 + 3"
-    self assert: spaceship2 position equals: 12.  "9 + 3"
+    self assert: spaceship1 position equals: 9.
+    self assert: spaceship2 position equals: 12.
 ]
 
 { #category : 'tests' }
@@ -327,23 +324,17 @@ BoxTest >> test014WormholeReversedMovesInOppositeDirection [
     wormholeStart associateWith: wormholeEnd.
     wormholeEnd associateWith: wormholeStart.
     
-    "wormholeStart esta en pos 3 y wormholeEnd en pos 8"
     wormholeStart position: 3.
     wormholeEnd position: 8.
     
     modifier := ReversalModifier new.
     spaceships := OrderedCollection new.
     actualSpaceship := Spaceship createWithId: 1.
-    actualSpaceship move: 2.  "pos 3 (donde esta wormholeStart)"
+    actualSpaceship move: 2.
     
     wormholeStart applyEffect: spaceships and: actualSpaceship through: modifier.
-    
-    "Wormhole normal: 3 → 8 (move: 8-3 = +5)"
-    "Wormhole revertido: 8 → 3 (move: 3-8 = -5)"
-    "Desde pos 3, revertido deberia NO moverse (o ir a inicio)"
-    
-    "Ajustamos: revertido va en dirección opuesta"
-    self assert: actualSpaceship position equals: -2.  "3 + (3-8) = 3 - 5 = -2"
+ 
+    self assert: actualSpaceship position equals: -2.
 ]
 
 { #category : 'tests' }
@@ -428,11 +419,9 @@ BoxTest >> test017LoadedHyperJumpReversedMovesBackward [
     actualSpaceship2 := Spaceship createWithId: 2.
     actualSpaceship2 move: 4.
     
-    "Normal: 6 parsecs / 2 = 3 boxes → pos 8"
     hyperJump applyEffect: OrderedCollection new and: actualSpaceship1 through: normalModifier.
     self assert: actualSpaceship1 position equals: 8.
     
-    "Revertido: -3 boxes → pos 2"
     hyperJump applyEffect: OrderedCollection new and: actualSpaceship2 through: reversalModifier.
     self assert: actualSpaceship2 position equals: 2.
 ]
@@ -447,19 +436,83 @@ BoxTest >> test018HyperSpaceJumpReversedMovesBackwardAndGainsShield [
     
     actualSpaceship1 := Spaceship createWithId: 1.
     actualSpaceship1 move: 10.
-    "Shield inicial: 3"
     
     actualSpaceship2 := Spaceship createWithId: 2.
     actualSpaceship2 move: 10.
-    "Shield inicial: 3"
     
-    "Normal: +4 movimiento, -1 shield → pos 15, shield 2 (3 - 1)"
     hyperSpaceJump applyEffect: OrderedCollection new and: actualSpaceship1 through: normalModifier.
     self assert: actualSpaceship1 position equals: 15.
     self assert: actualSpaceship1 shield equals: 2.
     
-    "Revertido: -4 movimiento, +1 shield → pos 7, shield 4 (3 + 1)"
     hyperSpaceJump applyEffect: OrderedCollection new and: actualSpaceship2 through: reversalModifier.
     self assert: actualSpaceship2 position equals: 7.
     self assert: actualSpaceship2 shield equals: 4.
+]
+
+{ #category : 'tests' }
+BoxTest >> test074ReversedCardBoxWithoutCardsDoesNotFail [
+    | cardBox spaceship modifier |
+    
+    cardBox := CardBox new.
+    spaceship := Spaceship createWithId: 1.
+    modifier := ReversalModifier new.
+    
+    self shouldnt: [ 
+        cardBox applyEffect: OrderedCollection new 
+               and: spaceship 
+               through: modifier 
+    ] raise: Error.
+    
+    self assert: spaceship position equals: 1.
+]
+
+{ #category : 'tests' }
+BoxTest >> test075ReversalOnNormalBoxDoesNothing [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 4).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 3.
+    
+    spaceship1 := aGame getSpaceships first.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 5.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: (aGame isReversedAt: 5).
+    
+    aGame playTurn.
+    
+    self assert: spaceship1 position equals: 5.
+    self assert: spaceship1 lapsCompleted equals: 0.
+
+    self assert: (aGame isReversedAt: 5).
 ]

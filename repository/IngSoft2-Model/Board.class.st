@@ -43,10 +43,11 @@ Board >> length [
 
 { #category : 'as yet unclassified' }
 Board >> normalizeAll: spaceships [
+    
+    self normalizeForwards: spaceships.
+    self normalizeFirstBox: spaceships.
+    self normalizeBackwards: spaceships.
 
-	self normalizeForwards: spaceships.
-	self normalizeFirstBox: spaceships.
-	self normalizeBackwards: spaceships
 ]
 
 { #category : 'as yet unclassified' }

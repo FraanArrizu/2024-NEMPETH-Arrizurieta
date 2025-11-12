@@ -23,10 +23,11 @@ Deck >> giveACard [
         4 -> Cancellation.
         5 -> Redo.
         6 -> Repeat.
+		  7 -> Reversal.
     } asDictionary.
-    randomValue := #(1 2 3 4 5 6) atRandom.
+    randomValue := #(1 2 3 4 5 6 7) atRandom.
     aCard := (cardMapping at: randomValue) createWithId: idForCard.
-	 idForCard := idForCard + 1.
+    idForCard := idForCard + 1.
     
     ^ aCard
 
