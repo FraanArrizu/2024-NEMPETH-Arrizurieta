@@ -2291,7 +2291,7 @@ GameTest >> test052WhenReversalCardIsPlayedThenPositionIsReversed [
 { #category : 'tests' }
 GameTest >> test053ReversalCanOnlyBePlayedDuringSpaceshipTurn [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
-    
+
     aDie := LoadedDie of: 10.
     dices := OrderedCollection with: aDie.
 
@@ -2314,11 +2314,12 @@ GameTest >> test053ReversalCanOnlyBePlayedDuringSpaceshipTurn [
         and: aBoard
         andLapsToWin: 1.
 
+    "Spaceship 2 intenta jugar carta pero no es su turno (es turno de spaceship 1)"
     cardArguments := Dictionary new.
     cardArguments at: 'idSpaceship' put: 2.
-    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idCardToUse' put: 3.  "Spaceship 2 tiene cartas con id 3 y 4"
     cardArguments at: 'targetPosition' put: 3.
-    
+
     self should: [ aGame playCard: cardArguments ] raise: Error.
 ]
 
@@ -3174,4 +3175,187 @@ GameTest >> test075MultipleReversalsOnDifferentPositions [
     
     self assert: (aGame isReversedAt: 4).
     self assert: (aGame isReversedAt: 8).
+]
+
+{ #category : 'tests' }
+GameTest >> test076ReversedCardBoxWithNoCardsDoesNotFail [
+    | dices aDie cards aDeck boxes aCardBox aBoard aGame cardArguments spaceship1 |
+
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3).
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Reversal) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aCardBox := CardBox createWith: aDeck.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aCardBox.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+
+    spaceship1 := aGame getSpaceships first.
+
+    "Spaceship1 inicia con 2 cartas (id 1 y 2)"
+    self assert: spaceship1 cards size equals: 2.
+
+    "Primero jugamos la carta Reversal"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+
+    aGame playCard: cardArguments.
+
+    self assert: (aGame isReversedAt: 4).
+    self assert: spaceship1 cards size equals: 1.
+
+    "Ahora removemos todas las cartas restantes"
+    spaceship1 cards removeAll.
+    self assert: spaceship1 cards size equals: 0.
+
+    "Al caer en CardBox revertido sin cartas, no debe fallar"
+    aGame playTurn.
+
+    self assert: spaceship1 position equals: 4.
+    self assert: spaceship1 cards size equals: 0.
+]
+
+{ #category : 'tests' }
+GameTest >> test077RedoCanRepeatReversalEffect [
+    | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
+
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3 with: 2).
+    dices := OrderedCollection with: aDie.
+
+    cards := {
+        (1 -> Reversal).
+        (2 -> Redo).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aBlackHole := BlackHole new.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aBlackHole.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 2.
+
+    "Spaceship 1 juega Reversal en posición 4"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+
+    aGame playCard: cardArguments.
+    self assert: (aGame isReversedAt: 4).
+
+    "Spaceship 1 tira 3, va a pos 4 (BlackHole revertido +4), termina en pos 8"
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 1).
+
+    "Spaceship 2 juega Redo (repite Reversal en posición 7)"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 2.
+    cardArguments at: 'idCardToUse' put: 4.
+    cardArguments at: 'targetPosition' put: 7.
+
+    aGame playCard: cardArguments.
+    self assert: (aGame isReversedAt: 4).
+    self assert: (aGame isReversedAt: 7).
+
+    "Spaceship 2 tira 2, va de pos 1 a pos 3"
+    aGame playTurn.
+
+    "Resultado final: Spaceship 1 en pos 8, Spaceship 2 en pos 3"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 3).
+]
+
+{ #category : 'tests' }
+GameTest >> test078RepeatWorksWithReversedBoxEffects [
+    | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
+
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 3 with: 2).
+    dices := OrderedCollection with: aDie.
+
+    cards := {
+        (1 -> Reversal).
+        (2 -> Repeat).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    aBlackHole := BlackHole new.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        aBlackHole.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 2.
+
+    "Spaceship 1 juega Reversal en posición 4"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'targetPosition' put: 4.
+
+    aGame playCard: cardArguments.
+    self assert: (aGame isReversedAt: 4).
+
+    "Spaceship 1 tira 3, cae en pos 4 (BlackHole revertido +4), termina en pos 8"
+    aGame playTurn.
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 1).
+
+    "Spaceship 2 juega Repeat para repetir el efecto del BlackHole revertido sobre sí mismo"
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 2.
+    cardArguments at: 'idCardToUse' put: 4.
+    cardArguments at: 'idTargetSpaceship' put: 2.
+
+    aGame playCard: cardArguments.
+
+    "Spaceship 2 debe haber recibido el efecto de BlackHole revertido (+4)"
+    self assert: aGame checkPositionsOfSpaceships equals: (OrderedCollection with: 8 with: 5).
 ]

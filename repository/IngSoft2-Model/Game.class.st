@@ -72,6 +72,7 @@ Game >> addReversal: aReversal at: aPosition [
     | reversalsAtPosition |
     reversalsAtPosition := activeReversals at: aPosition ifAbsentPut: [ OrderedCollection new ].
     reversalsAtPosition add: aReversal.
+	 lastCardPlayed := Reversal.
 ]
 
 { #category : 'as yet unclassified' }
