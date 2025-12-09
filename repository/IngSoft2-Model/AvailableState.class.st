@@ -11,6 +11,11 @@ AvailableState class >> create [
 	^ self new
 ]
 
+{ #category : 'testing' }
+AvailableState >> isAvailable [
+    ^ true
+]
+
 { #category : 'as yet unclassified' }
 AvailableState >> playTurn: aSpaceship [
 

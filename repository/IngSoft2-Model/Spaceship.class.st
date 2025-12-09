@@ -71,7 +71,7 @@ Spaceship >> changeTo: anState [
 
 { #category : 'testing' }
 Spaceship >> hasAvailableProtectors [
-	^ protectors isNotEmpty
+	^ protectors anySatisfy: [ :protector | protector isAvailable ]
 ]
 
 { #category : 'accessing' }
@@ -92,6 +92,11 @@ Spaceship >> initializeWith: anId [
 	cards := OrderedCollection new.
 	state := AvailableState create.
 	protectors := OrderedCollection new.
+]
+
+{ #category : 'testing' }
+Spaceship >> isAvailable [
+    ^ state isAvailable
 ]
 
 { #category : 'testing' }
@@ -153,6 +158,11 @@ Spaceship >> recoverShields [
 { #category : 'removing' }
 Spaceship >> removeMercenary: aSpaceship [ 
 	mercenaries remove: aSpaceship.
+]
+
+{ #category : 'removing' }
+Spaceship >> removeProtector: aSpaceship [
+	protectors remove: aSpaceship.
 ]
 
 { #category : 'as yet unclassified' }

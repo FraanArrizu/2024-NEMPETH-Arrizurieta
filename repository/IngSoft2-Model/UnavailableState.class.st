@@ -20,6 +20,11 @@ UnavailableState >> initializeState [
 	turnsToWait := 2
 ]
 
+{ #category : 'testing' }
+UnavailableState >> isAvailable [
+    ^ false
+]
+
 { #category : 'as yet unclassified' }
 UnavailableState >> playTurn: aSpaceship [
 

@@ -3856,3 +3856,65 @@ GameTest >> test093WhenProtectedSpaceshipLosesBattleProtectorAbsorbsDamage [
     
     self assert: spaceship2 shield equals: 2.
 ]
+
+{ #category : 'tests' }
+GameTest >> test094WhenProtectorRunsOutOfShieldsIsRemovedAndPenalized [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: ({ 
+        1. 1. 5. 2.
+        1. 1. 5. 2.
+        1. 1. 5. 2
+    } asOrderedCollection).
+    dices := OrderedCollection with: aDie.
+
+    cards := { 
+        (1 -> Protector).
+        (2 -> Speed).
+        (3 -> Speed).
+        (4 -> Speed).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 3.
+    
+    spaceship1 := aGame getSpaceships first.
+    spaceship2 := aGame getSpaceships second.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idProtectorSpaceship' put: 2.
+    aGame playCard: cardArguments.
+    
+    aGame playTurn.
+    aGame playTurn.
+    self assert: spaceship2 shield equals: 2.
+    self assert: spaceship1 position equals: 1.
+    
+    aGame playTurn.
+    aGame playTurn.
+    self assert: spaceship2 shield equals: 1.
+    
+    aGame playTurn.
+    aGame playTurn.
+    
+    self assert: spaceship2 shield equals: 0.
+    
+    self assert: spaceship2 position equals: 1.
+    
+    self deny: spaceship1 protectors isEmpty.
+]

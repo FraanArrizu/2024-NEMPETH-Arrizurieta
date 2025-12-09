@@ -126,12 +126,20 @@ Game >> applyRepeat: idOfTargetSpaceship [
 
 { #category : 'as yet unclassified' }
 Game >> applyShieldLoss: aSpaceship [
-	|protector|
-	
-   aSpaceship hasAvailableProtectors
-		ifTrue: [ protector:= aSpaceship protectors first.
-			protector updateShield: -1. ]
-		ifFalse: [ aSpaceship updateShield: -1. ]
+    | protector |
+    
+    aSpaceship hasAvailableProtectors
+        ifTrue: [ 
+            protector := aSpaceship protectors detect: [ :p | p isAvailable ].
+            protector updateShield: -1.
+            
+            (protector shield <= 0) ifTrue: [ 
+                protector move: -1 * protector position + 1.
+            ]
+        ]
+        ifFalse: [ 
+            aSpaceship updateShield: -1.
+        ]
 ]
 
 { #category : 'as yet unclassified' }
