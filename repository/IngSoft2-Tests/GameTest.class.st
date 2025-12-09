@@ -3710,3 +3710,149 @@ GameTest >> test087NoBattleWhenLandingOnReversedBoxWithSpaceship [
     self assert: spaceship1 shield equals: 3.
     self assert: spaceship2 shield equals: 3.
 ]
+
+{ #category : 'tests' }
+GameTest >> test088ProtectorCardIsAPermanentCard [
+    | protectorCard |
+    
+    protectorCard := Protector new.
+    
+    self assert: (protectorCard isKindOf: PermanentCard).
+]
+
+{ #category : 'tests' }
+GameTest >> test089SpaceshipHasProtectorsCollection [
+    | spaceship |
+    
+    spaceship := Spaceship createWithId: 1.
+    
+    self assert: spaceship protectors isEmpty.
+]
+
+{ #category : 'tests' }
+GameTest >> test090SpaceshipCanAddProtector [
+    | spaceship1 spaceship2 |
+    
+    spaceship1 := Spaceship createWithId: 1.
+    spaceship2 := Spaceship createWithId: 2.
+    
+    spaceship1 addProtector: spaceship2.
+    
+    self assert: spaceship1 protectors size equals: 1.
+    self assert: (spaceship1 protectors includes: spaceship2).
+]
+
+{ #category : 'tests' }
+GameTest >> test091GameCanApplyProtector [
+    | dices aDie cards aDeck boxes aBoard aGame spaceship1 spaceship2 |
+    
+    aDie := LoadedDie of: 10.
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Protector) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := { NormalBox new. NormalBox new. NormalBox new } asOrderedCollection.
+    aBoard := Board createWith: boxes.
+    
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    spaceship1 := aGame getSpaceships first.
+    spaceship2 := aGame getSpaceships second.
+    
+    aGame applyProtector: 2 to: 1.
+    
+    self assert: spaceship1 protectors size equals: 1.
+    self assert: (spaceship1 protectors includes: spaceship2).
+]
+
+{ #category : 'tests' }
+GameTest >> test092ProtectorCardCanBePlayed [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
+    
+    aDie := LoadedDie of: 10.
+    dices := OrderedCollection with: aDie.
+
+    cards := { (1 -> Protector) } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := { NormalBox new. NormalBox new. NormalBox new } asOrderedCollection.
+    aBoard := Board createWith: boxes.
+    
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    spaceship1 := aGame getSpaceships first.
+    spaceship2 := aGame getSpaceships second.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idProtectorSpaceship' put: 2.
+    
+    aGame playCard: cardArguments.
+    
+    self assert: spaceship1 protectors size equals: 1.
+    self assert: (spaceship1 protectors includes: spaceship2).
+]
+
+{ #category : 'tests' }
+GameTest >> test093WhenProtectedSpaceshipLosesBattleProtectorAbsorbsDamage [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: (OrderedCollection with: 1 with: 1 with: 5 with: 2).
+    dices := OrderedCollection with: aDie.
+
+    cards := { 
+        (1 -> Protector).
+        (2 -> Speed).
+        (3 -> Speed).
+        (4 -> Speed).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 1.
+    
+    spaceship1 := aGame getSpaceships first.
+    spaceship2 := aGame getSpaceships second.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idProtectorSpaceship' put: 2.
+    aGame playCard: cardArguments.
+    
+    aGame playTurn.
+
+    aGame playTurn.
+    
+    self assert: spaceship1 position equals: 1.
+    
+    self assert: spaceship1 shield equals: 3.
+    
+    self assert: spaceship2 shield equals: 2.
+]

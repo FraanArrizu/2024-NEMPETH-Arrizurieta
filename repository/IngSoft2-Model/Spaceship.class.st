@@ -10,7 +10,8 @@ Class {
 		'cards',
 		'movementBySpeed',
 		'avaliableForMercenary',
-		'mercenaries'
+		'mercenaries',
+		'protectors'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -44,6 +45,11 @@ Spaceship >> addMercenary: aSpaceship [
 ]
 
 { #category : 'adding' }
+Spaceship >> addProtector: aSpaceship [
+	protectors add: aSpaceship .
+]
+
+{ #category : 'adding' }
 Spaceship >> addSpeed [
 	movementBySpeed := movementBySpeed + 1.
 ]
@@ -63,6 +69,11 @@ Spaceship >> changeTo: anState [
 	state := anState.
 ]
 
+{ #category : 'testing' }
+Spaceship >> hasAvailableProtectors [
+	^ protectors isNotEmpty
+]
+
 { #category : 'accessing' }
 Spaceship >> id [
 	^ id
@@ -79,7 +90,8 @@ Spaceship >> initializeWith: anId [
 	shield := 3.
 	lapsCompleted := 0.
 	cards := OrderedCollection new.
-	state := AvailableState create
+	state := AvailableState create.
+	protectors := OrderedCollection new.
 ]
 
 { #category : 'testing' }
@@ -125,6 +137,11 @@ Spaceship >> playTurn [
 Spaceship >> position [
 
 	^ position
+]
+
+{ #category : 'accessing' }
+Spaceship >> protectors [
+  ^ protectors
 ]
 
 { #category : 'as yet unclassified' }
