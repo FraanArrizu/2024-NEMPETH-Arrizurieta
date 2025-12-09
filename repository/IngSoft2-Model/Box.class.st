@@ -1,25 +1,36 @@
 Class {
-	#name : #Box,
-	#superclass : #Object,
+	#name : 'Box',
+	#superclass : 'Object',
 	#instVars : [
 		'position'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #accessing }
-Box >> applyEffect: spaceships and: actualSpaceship [
+{ #category : 'accessing' }
+Box >> applyEffect: spaceships and: actualSpaceship through: aModifier [
 
-	self subclassResponsibility.
+	aModifier applyEffectOf: self on: spaceships and: actualSpaceship.
 ]
 
-{ #category : #accessing }
+{ #category : 'as yet unclassified' }
+Box >> applyNormalEffect: spaceships and: actualSpaceship [
+    self subclassResponsibility.
+]
+
+{ #category : 'as yet unclassified' }
+Box >> applyReversedEffect: spaceships and: actualSpaceship [
+    self applyNormalEffect: spaceships and: actualSpaceship.
+]
+
+{ #category : 'accessing' }
 Box >> position [
 
 	^ position
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Box >> position: aPosition [
 
 	position := aPosition

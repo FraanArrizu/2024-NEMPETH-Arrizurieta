@@ -1,6 +1,6 @@
 Class {
-	#name : #Game,
-	#superclass : #Object,
+	#name : 'Game',
+	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
 		'dices',
@@ -10,19 +10,21 @@ Class {
 		'lastCardPlayed',
 		'movementByAcceleration',
 		'lastBox',
-		'board'
+		'board',
+		'activeReversals'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Game class >> amountOfLapsToWinValidation: amountOfLapsToWin [
 
 	amountOfLapsToWin < 1 ifTrue: [
 		Error signal: 'Laps to win should be greater than zero' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game class >> createWithNumberOfSpaceships: numberOfSpaceships and: aCollectionOfDices and: aDeck and: aBoard andLapsToWin: amountOfLapsToWin [ 
 
 	self dicesValidation: aCollectionOfDices.
@@ -37,21 +39,21 @@ Game class >> createWithNumberOfSpaceships: numberOfSpaceships and: aCollectionO
 		  andLapsToWin: amountOfLapsToWin
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Game class >> dicesValidation: aCollectionOfDices [
 
 	aCollectionOfDices size < 1 ifTrue: [
 		Error signal: 'Game should have a least one die' ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Game class >> spaceshipsValidation: numberOfSpaceships [
 
 	numberOfSpaceships < 2 ifTrue: [
 		Error signal: 'Game should have a least two spaceships' ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 Game >> addAcceleration [
 
 	movementByAcceleration := movementByAcceleration + 1.
@@ -59,13 +61,21 @@ Game >> addAcceleration [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> addPermanentCardPlayed: aCard [
 
 	permanentCardsPlayed add: aCard
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'accessing' }
+Game >> addReversal: aReversal at: aPosition [
+    | reversalsAtPosition |
+    reversalsAtPosition := activeReversals at: aPosition ifAbsentPut: [ OrderedCollection new ].
+    reversalsAtPosition add: aReversal.
+	 lastCardPlayed := Reversal.
+]
+
+{ #category : 'as yet unclassified' }
 Game >> applyMercenary: idOfMercenarySpaceship to: idOfActualSpaceship [
 
 	| mercenarySpaceship actualSpaceship |
@@ -80,16 +90,18 @@ Game >> applyMercenary: idOfMercenarySpaceship to: idOfActualSpaceship [
 	lastCardPlayed := Mercenary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> applyRepeat: idOfTargetSpaceship [ 
 	
-	| affectedSpaceship index |
+	| affectedSpaceship index modifier|
 	self targetSpaceshipExistValidation: idOfTargetSpaceship.
 	affectedSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfTargetSpaceship ].
 	index := spaceships indexOf: affectedSpaceship.
 	spaceships removeAt: index.
 	
-	lastBox applyEffect: spaceships and: affectedSpaceship.
+	modifier := self modifierAt: lastBox position.
+	
+	lastBox applyEffect: spaceships and: affectedSpaceship through: modifier.
 	
 	spaceships add: affectedSpaceship beforeIndex: index.
 	board normalizeAll: spaceships.
@@ -97,7 +109,7 @@ Game >> applyRepeat: idOfTargetSpaceship [
 	lastCardPlayed := Repeat.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> applySpeedWith: anIdOfSpaceship [
 
 	| affectedSpaceship |
@@ -108,21 +120,21 @@ Game >> applySpeedWith: anIdOfSpaceship [
 	lastCardPlayed := Speed
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> checkAmountOfCardsOfSpaceships [
 	| spaceshipsSortedById |
 	spaceshipsSortedById := spaceships copy sort: [ :a :b | (a id) < (b id) ].
 	^ spaceshipsSortedById collect: [ :spaceship | (spaceship cards) size ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> checkPositionsOfSpaceships [
 	| spaceshipsSortedById |
 	spaceshipsSortedById := spaceships copy sort: [ :a :b | (a id) < (b id) ].
 	^ spaceshipsSortedById collect: [ :spaceship | spaceship position ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> checkRanking [
 	| sortedSpaceships |
 	sortedSpaceships := spaceships copy sort: [ :a :b | a > b ].
@@ -130,14 +142,14 @@ Game >> checkRanking [
 	^ sortedSpaceships collect: [ :spaceship | spaceship id ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> checkShieldsOfSpaceships [
 	| spaceshipsSortedById |
 	spaceshipsSortedById := spaceships copy sort: [ :a :b | (a id) < (b id) ].
 	^ spaceshipsSortedById collect: [ :spaceship | spaceship shield ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> checkWinner [
 
 	^ spaceships
@@ -145,7 +157,7 @@ Game >> checkWinner [
 		  ifNone: [ nil ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> createSpaceships: numberOfSpaceships [
 
 	| aCollectionOfSpaceships anSpaceship |
@@ -158,27 +170,38 @@ Game >> createSpaceships: numberOfSpaceships [
 	^ aCollectionOfSpaceships
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
+Game >> getBoardSize [
+    ^ board length
+]
+
+{ #category : 'as yet unclassified' }
 Game >> getIdOfSpaceshipAtTurn [
 
 	^ spaceships first id
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> getLastCardPlayed [
 	^ lastCardPlayed
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> getPermanentCardPlayed [
 	^ permanentCardsPlayed
 ]
 
-{ #category : #initialization }
+{ #category : 'as yet unclassified' }
+Game >> getSpaceships [
+    ^ spaceships
+]
+
+{ #category : 'initialization' }
 Game >> initializeWith: numberOfSpaceships and: aCollectionOfDices and: aDeck and: aBoard andLapsToWin: amountOfLapsToWin [ 
 	
 	permanentCardsPlayed := OrderedCollection new.
 	movementByAcceleration := 0.
+	activeReversals := Dictionary new.
 	dices := aCollectionOfDices.
 	deck := aDeck.
 	board := aBoard.
@@ -187,14 +210,30 @@ Game >> initializeWith: numberOfSpaceships and: aCollectionOfDices and: aDeck an
 	spaceships := self createSpaceships: numberOfSpaceships.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'accessing' }
+Game >> isReversedAt: aPosition [
+    | reversalsAtPosition |
+    reversalsAtPosition := activeReversals at: aPosition ifAbsent: [ OrderedCollection new ].
+    ^ reversalsAtPosition size odd.
+]
+
+{ #category : 'as yet unclassified' }
 Game >> mercenaryAvailabilityValidation: mercenarySpaceship [
 
 	mercenarySpaceship isAvaliableForMercenary ifFalse: [
 		Error signal: 'A spaceship chose a mercenary already chosen' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'accessing' }
+Game >> modifierAt: aPosition [
+    | isReversed |
+    isReversed := self isReversedAt: aPosition.
+    ^ isReversed
+        ifTrue: [ ReversalModifier new ]
+        ifFalse: [ NormalModifier new ].
+]
+
+{ #category : 'as yet unclassified' }
 Game >> passTurn [
 	
 	| actualSpaceship |
@@ -205,7 +244,7 @@ Game >> passTurn [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> playCard: aCardArguments [
 
 	| idOfSpaceship actualSpaceship idOfCard card |
@@ -224,10 +263,10 @@ Game >> playCard: aCardArguments [
 	actualSpaceship removeThis: card
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualSpaceship boxToCheck winner |
+	| actualSpaceship boxToCheck winner modifier|
 	actualSpaceship := spaceships removeFirst.
 
 	actualSpaceship playTurn ifFalse: [ ^ self ].
@@ -238,7 +277,10 @@ Game >> playTurn [
 
 	boxToCheck := board findBoxIn: actualSpaceship position.
 	lastBox := boxToCheck.
-	boxToCheck applyEffect: spaceships and: actualSpaceship.
+	
+	modifier := self modifierAt: boxToCheck position.
+	
+	boxToCheck applyEffect: spaceships and: actualSpaceship through: modifier.
 	spaceships add: actualSpaceship.
 
 	board normalizeAll: spaceships.
@@ -249,13 +291,13 @@ Game >> playTurn [
 	self verifyBattleWith: actualSpaceship
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 Game >> removeAcceleration [
 	movementByAcceleration := movementByAcceleration - 1.
 
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 Game >> removeMercenary: idOfMercenarySpaceship and: idOfActualSpaceship [ 
 	
 	| mercenarySpaceship actualSpaceship |
@@ -267,13 +309,19 @@ Game >> removeMercenary: idOfMercenarySpaceship and: idOfActualSpaceship [
 
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 Game >> removePermanentCardPlayed: aCard [ 
 	permanentCardsPlayed remove: aCard.
 	lastCardPlayed := Cancellation.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'removing' }
+Game >> removeReversal: aReversal [
+    activeReversals keysAndValuesDo: [ :position :reversals |
+        reversals removeAllSuchThat: [ :reversal | reversal id = aReversal id ] ].
+]
+
+{ #category : 'as yet unclassified' }
 Game >> removeSpeedWith: anIdOfSpaceship [ 
 	| affectedSpaceship |
 	affectedSpaceship := spaceships detect: [ :aSpaceship |
@@ -282,7 +330,7 @@ Game >> removeSpeedWith: anIdOfSpaceship [
 	affectedSpaceship removeSpeed. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> spaceshipExistValidation: idOfSpaceship [
 
 	(self checkRanking includes: idOfSpaceship) ifFalse: [
@@ -290,14 +338,14 @@ Game >> spaceshipExistValidation: idOfSpaceship [
 			'The spaceship that wants to play the card does not exist' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> targetSpaceshipExistValidation: anIdOfSpaceship [
 
 	(self checkRanking includes: anIdOfSpaceship) ifFalse: [
 		Error signal: 'The target spaceship does not exist' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> throwDices [
 
 	| sum |
@@ -306,7 +354,7 @@ Game >> throwDices [
 	^ sum
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Game >> validation: actualSpaceship hasTheCard: idOfCard [
 
 	(actualSpaceship cards noneSatisfy: [ :aCard | aCard id = idOfCard ])
@@ -315,7 +363,7 @@ Game >> validation: actualSpaceship hasTheCard: idOfCard [
 				'A spaceship is trying to play a card that does not have' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Game >> verifyBattleWith: actualSpaceship [
 
 	| spaceshipsToFight sumOfThrowsActualSpaceship sumOfThrowsCounterSpaceship counterSpaceship |

@@ -1,18 +1,19 @@
 Class {
-	#name : #Deck,
-	#superclass : #Object,
+	#name : 'Deck',
+	#superclass : 'Object',
 	#instVars : [
 		'idForCard'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #operations }
+{ #category : 'operations' }
 Deck class >> create [
 	^ self new initializeWith
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Deck >> giveACard [
     | aCard randomValue cardMapping |
     cardMapping := {
@@ -22,16 +23,17 @@ Deck >> giveACard [
         4 -> Cancellation.
         5 -> Redo.
         6 -> Repeat.
+		  7 -> Reversal.
     } asDictionary.
-    randomValue := #(1 2 3 4 5 6) atRandom.
+    randomValue := #(1 2 3 4 5 6 7) atRandom.
     aCard := (cardMapping at: randomValue) createWithId: idForCard.
-	 idForCard := idForCard + 1.
+    idForCard := idForCard + 1.
     
     ^ aCard
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Deck >> initializeWith [
 	idForCard := 1
 ]

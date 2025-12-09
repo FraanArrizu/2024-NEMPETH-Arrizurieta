@@ -1,19 +1,20 @@
 Class {
-	#name : #CardBox,
-	#superclass : #Box,
+	#name : 'CardBox',
+	#superclass : 'Box',
 	#instVars : [
 		'deck'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 CardBox class >> createWith: aDeck [ 
 	^ self new initializeWith: aDeck
 ]
 
-{ #category : #accessing }
-CardBox >> applyEffect: spaceships and: actualSpaceship [
+{ #category : 'accessing' }
+CardBox >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	| aCard |
 	aCard := deck giveACard.
@@ -21,7 +22,15 @@ CardBox >> applyEffect: spaceships and: actualSpaceship [
 	actualSpaceship obtain: aCard
 ]
 
-{ #category : #initialization }
+{ #category : 'as yet unclassified' }
+CardBox >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship cards ifNotEmpty: [
+        | randomCard |
+        randomCard := actualSpaceship cards atRandom.
+        actualSpaceship removeThis: randomCard ].
+]
+
+{ #category : 'initialization' }
 CardBox >> initializeWith: aDeck [ 
 	deck := aDeck
 ]
