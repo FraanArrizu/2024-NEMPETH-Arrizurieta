@@ -150,6 +150,15 @@ Spaceship >> protectors [
 ]
 
 { #category : 'as yet unclassified' }
+Spaceship >> receiveDamage: amount [
+
+	self updateShield:  -1 * amount.
+	shield <= 0 ifFalse: [ ^ self ].
+	self move: -1 * position + 1.
+	self changeTo: UnavailableState create
+]
+
+{ #category : 'as yet unclassified' }
 Spaceship >> recoverShields [
 
 	shield := 3

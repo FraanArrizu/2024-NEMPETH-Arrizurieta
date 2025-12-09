@@ -131,14 +131,10 @@ Game >> applyShieldLoss: aSpaceship [
     aSpaceship hasAvailableProtectors
         ifTrue: [ 
             protector := aSpaceship protectors detect: [ :p | p isAvailable ].
-            protector updateShield: -1.
-            
-            (protector shield <= 0) ifTrue: [ 
-                protector move: -1 * protector position + 1.
-            ]
+            protector receiveDamage: 1.
         ]
         ifFalse: [ 
-            aSpaceship updateShield: -1.
+            aSpaceship receiveDamage: 1.
         ]
 ]
 
