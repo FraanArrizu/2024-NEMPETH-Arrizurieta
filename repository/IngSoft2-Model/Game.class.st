@@ -298,7 +298,9 @@ Game >> playTurn [
 	| actualSpaceship boxToCheck winner modifier|
 	actualSpaceship := spaceships removeFirst.
 
-	actualSpaceship playTurn ifFalse: [ ^ self ].
+	actualSpaceship playTurn ifFalse: [ 
+		spaceships add: actualSpaceship.
+		^ self ].
 	actualSpaceship move: self throwDices + movementByAcceleration
 		+ actualSpaceship movementBySpeed.
 
@@ -342,6 +344,16 @@ Game >> removeMercenary: idOfMercenarySpaceship and: idOfActualSpaceship [
 Game >> removePermanentCardPlayed: aCard [ 
 	permanentCardsPlayed remove: aCard.
 	lastCardPlayed := Cancellation.
+]
+
+{ #category : 'removing' }
+Game >> removeProtector: idOfProtectorSpaceship from: idOfProtectedSpaceship [ 
+    
+    | protectorSpaceship protectedSpaceship |
+    protectorSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfProtectorSpaceship ].
+    protectedSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfProtectedSpaceship ].
+    
+    protectedSpaceship removeProtector: protectorSpaceship
 ]
 
 { #category : 'removing' }
