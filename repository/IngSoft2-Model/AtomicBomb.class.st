@@ -18,3 +18,8 @@ AtomicBomb >> applyNormalEffect: spaceships and: actualSpaceship [
 	actualSpaceship move: -1 * actualSpaceship position + 1.
 	actualSpaceship updateShield: -1
 ]
+
+{ #category : 'as yet unclassified' }
+AtomicBomb >> applyReversedEffect: spaceships and: actualSpaceship [
+	self applyNormalEffect: spaceships and: actualSpaceship
+]

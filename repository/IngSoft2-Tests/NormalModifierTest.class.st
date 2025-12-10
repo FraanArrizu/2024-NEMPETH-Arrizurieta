@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'tests' }
-NormalModifierTest >> test001CanBeCreated [
+NormalModifierTest >> test001WhenNormalModifierIsCreatedThenIsInstanceOfNormalModifier [
     | modifier |
     
     modifier := NormalModifier new.
@@ -15,7 +15,7 @@ NormalModifierTest >> test001CanBeCreated [
 ]
 
 { #category : 'tests' }
-NormalModifierTest >> test002RespondsToApplyEffectOf [
+NormalModifierTest >> test002WhenNormalModifierIsCreatedThenRespondsToApplyEffectOf [
     | modifier |
     
     modifier := NormalModifier new.
@@ -24,7 +24,7 @@ NormalModifierTest >> test002RespondsToApplyEffectOf [
 ]
 
 { #category : 'tests' }
-NormalModifierTest >> test003testDelegatesToBoxNormalEffect [
+NormalModifierTest >> test003WhenNormalModifierIsAppliedThenDelegatesToBoxNormalEffect [
     | modifier box |
     
     modifier := NormalModifier new.
@@ -36,7 +36,7 @@ NormalModifierTest >> test003testDelegatesToBoxNormalEffect [
 ]
 
 { #category : 'tests' }
-NormalModifierTest >> test004RespondsToApplyEffectThrough [
+NormalModifierTest >> test004WhenBoxIsCreatedThenRespondsToApplyEffectThrough [
     | box |
     
     box := NormalBox new.
@@ -45,7 +45,7 @@ NormalModifierTest >> test004RespondsToApplyEffectThrough [
 ]
 
 { #category : 'tests' }
-NormalModifierTest >> test005DelegatesToModifier [
+NormalModifierTest >> test005WhenBoxAppliesEffectThroughModifierThenDelegatesToModifier [
     | box modifier |
     
     box := NormalBox new.
