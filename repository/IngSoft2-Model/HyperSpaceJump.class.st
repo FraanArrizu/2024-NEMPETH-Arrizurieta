@@ -1,12 +1,19 @@
 Class {
-	#name : #HyperSpaceJump,
-	#superclass : #Box,
-	#category : #'IngSoft2-Model'
+	#name : 'HyperSpaceJump',
+	#superclass : 'Box',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #accessing }
-HyperSpaceJump >> applyEffect: spaceships and: actualSpaceship [
+{ #category : 'accessing' }
+HyperSpaceJump >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move: 4.
 	actualSpaceship updateShield: -1
+]
+
+{ #category : 'as yet unclassified' }
+HyperSpaceJump >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: -4.
+    actualSpaceship updateShield: 1.
 ]

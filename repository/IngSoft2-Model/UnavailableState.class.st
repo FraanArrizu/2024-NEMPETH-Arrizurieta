@@ -1,25 +1,31 @@
 Class {
-	#name : #UnavailableState,
-	#superclass : #SpaceshipState,
+	#name : 'UnavailableState',
+	#superclass : 'SpaceshipState',
 	#instVars : [
 		'turnsToWait'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #operations }
+{ #category : 'operations' }
 UnavailableState class >> create [
 
 	^ self new initializeState
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 UnavailableState >> initializeState [
 
 	turnsToWait := 2
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'testing' }
+UnavailableState >> isAvailable [
+    ^ false
+]
+
+{ #category : 'as yet unclassified' }
 UnavailableState >> playTurn: aSpaceship [
 
 	turnsToWait > 0

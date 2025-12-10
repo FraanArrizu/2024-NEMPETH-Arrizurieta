@@ -1,11 +1,12 @@
 Class {
-	#name : #AtomicBomb,
-	#superclass : #Box,
-	#category : #'IngSoft2-Model'
+	#name : 'AtomicBomb',
+	#superclass : 'Box',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #accessing }
-AtomicBomb >> applyEffect: spaceships and: actualSpaceship [
+{ #category : 'accessing' }
+AtomicBomb >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	spaceships do: [ :aSpaceship |
 		aSpaceship position ~= 1 ifTrue: [

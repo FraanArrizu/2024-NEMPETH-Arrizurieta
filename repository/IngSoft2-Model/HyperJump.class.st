@@ -1,22 +1,23 @@
 Class {
-	#name : #HyperJump,
-	#superclass : #Box,
+	#name : 'HyperJump',
+	#superclass : 'Box',
 	#instVars : [
 		'index',
 		'parsecsToBoxesRatio',
 		'collectionOfUnits'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 HyperJump class >> createWith: listLength andParsecsToBoxesRatio: aRatio [ 
 
 	^ self new initializeWith: listLength and: aRatio.
 ]
 
-{ #category : #accessing }
-HyperJump >> applyEffect: spaceships and: actualSpaceship [
+{ #category : 'accessing' }
+HyperJump >> applyNormalEffect: spaceships and: actualSpaceship [
 
 	actualSpaceship move:
 		(collectionOfUnits  at: index) toParsec // parsecsToBoxesRatio.
@@ -26,7 +27,16 @@ HyperJump >> applyEffect: spaceships and: actualSpaceship [
 	index := index + 1
 ]
 
-{ #category : #initialization }
+{ #category : 'as yet unclassified' }
+HyperJump >> applyReversedEffect: spaceships and: actualSpaceship [
+    actualSpaceship move: ((collectionOfUnits at: index) toParsec // parsecsToBoxesRatio) negated.
+    
+    index = collectionOfUnits size ifTrue: [ index := 0 ].
+    
+    index := index + 1.
+]
+
+{ #category : 'initialization' }
 HyperJump >> initializeWith: boardLength and: aRatio [
 
 	| maxPosibleLengthCollectionOfParsecs maxPosibleValueCollectionOfParsecs uniqueValuesSet setLength unitsMapping units setOfUnits |
@@ -53,7 +63,7 @@ HyperJump >> initializeWith: boardLength and: aRatio [
 	collectionOfUnits sort: [ :a :b | a toParsec > b toParsec ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 HyperJump >> units [
 	^ collectionOfUnits.
 ]

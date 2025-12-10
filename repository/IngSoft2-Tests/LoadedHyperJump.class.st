@@ -1,29 +1,35 @@
 Class {
-	#name : #LoadedHyperJump,
-	#superclass : #Object,
+	#name : 'LoadedHyperJump',
+	#superclass : 'Object',
 	#instVars : [
 		'index',
 		'collectionOfParsecs',
 		'parsecsToBoxesRatio',
 		'position'
 	],
-	#category : #'IngSoft2-Tests'
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LoadedHyperJump class >> createWith: listLength andParsecsToBoxesRatio: aRatio [
 
 	^ self new initializeWith: listLength and: aRatio
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 LoadedHyperJump >> addParsecs: aCollectionOfParsecs [
  	
 	collectionOfParsecs := aCollectionOfParsecs.
 ]
 
-{ #category : #accessing }
-LoadedHyperJump >> applyEffect: spaceships and: affectedSpaceship [
+{ #category : 'accessing' }
+LoadedHyperJump >> applyEffect: spaceships and: actualSpaceship through: aModifier [
+    aModifier applyEffectOf: self on: spaceships and: actualSpaceship.
+]
+
+{ #category : 'accessing' }
+LoadedHyperJump >> applyNormalEffect: spaceships and: affectedSpaceship [
 
 	affectedSpaceship move: ((collectionOfParsecs at: index) toParsec) // parsecsToBoxesRatio .
 	
@@ -33,7 +39,16 @@ LoadedHyperJump >> applyEffect: spaceships and: affectedSpaceship [
 	index := index + 1
 ]
 
-{ #category : #initialization }
+{ #category : 'as yet unclassified' }
+LoadedHyperJump >> applyReversedEffect: spaceships and: affectedSpaceship [
+    affectedSpaceship move: (((collectionOfParsecs at: index) toParsec) // parsecsToBoxesRatio) negated.
+    
+    index = collectionOfParsecs size ifTrue: [ index := 0 ].
+    
+    index := index + 1.
+]
+
+{ #category : 'initialization' }
 LoadedHyperJump >> initializeWith: listLength and: aRatio [
 
 	index := 1.
@@ -41,13 +56,13 @@ LoadedHyperJump >> initializeWith: listLength and: aRatio [
 	parsecsToBoxesRatio := aRatio
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LoadedHyperJump >> position [
 
 	^ position
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LoadedHyperJump >> position: anObject [
 
 	position := anObject
