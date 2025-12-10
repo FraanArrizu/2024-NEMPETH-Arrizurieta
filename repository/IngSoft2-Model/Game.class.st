@@ -91,6 +91,21 @@ Game >> applyMercenary: idOfMercenarySpaceship to: idOfActualSpaceship [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> applyProtector: idOfProtectorSpaceship to: idOfProtectedSpaceship [
+    | protectorSpaceship protectedSpaceship |
+    
+    self targetSpaceshipExistValidation: idOfProtectorSpaceship.
+    
+    protectorSpaceship := spaceships detect: [ :aSpaceship | 
+        aSpaceship id = idOfProtectorSpaceship ].
+    protectedSpaceship := spaceships detect: [ :aSpaceship | 
+        aSpaceship id = idOfProtectedSpaceship ].
+    
+    protectedSpaceship addProtector: protectorSpaceship.
+    lastCardPlayed := Protector.
+]
+
+{ #category : 'as yet unclassified' }
 Game >> applyRepeat: idOfTargetSpaceship [ 
 	
 	| affectedSpaceship index modifier|
@@ -107,6 +122,20 @@ Game >> applyRepeat: idOfTargetSpaceship [
 	board normalizeAll: spaceships.
 	
 	lastCardPlayed := Repeat.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyShieldLoss: aSpaceship [
+    | protector |
+    
+    aSpaceship hasAvailableProtectors
+        ifTrue: [ 
+            protector := aSpaceship protectors detect: [ :p | p isAvailable ].
+            protector receiveDamage: 1.
+        ]
+        ifFalse: [ 
+            aSpaceship receiveDamage: 1.
+        ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -269,7 +298,9 @@ Game >> playTurn [
 	| actualSpaceship boxToCheck winner modifier|
 	actualSpaceship := spaceships removeFirst.
 
-	actualSpaceship playTurn ifFalse: [ ^ self ].
+	actualSpaceship playTurn ifFalse: [ 
+		spaceships add: actualSpaceship.
+		^ self ].
 	actualSpaceship move: self throwDices + movementByAcceleration
 		+ actualSpaceship movementBySpeed.
 
@@ -313,6 +344,16 @@ Game >> removeMercenary: idOfMercenarySpaceship and: idOfActualSpaceship [
 Game >> removePermanentCardPlayed: aCard [ 
 	permanentCardsPlayed remove: aCard.
 	lastCardPlayed := Cancellation.
+]
+
+{ #category : 'removing' }
+Game >> removeProtector: idOfProtectorSpaceship from: idOfProtectedSpaceship [ 
+    
+    | protectorSpaceship protectedSpaceship |
+    protectorSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfProtectorSpaceship ].
+    protectedSpaceship := spaceships detect: [ :aSpaceship | aSpaceship id = idOfProtectedSpaceship ].
+    
+    protectedSpaceship removeProtector: protectorSpaceship
 ]
 
 { #category : 'removing' }
@@ -390,10 +431,10 @@ Game >> verifyBattleWith: actualSpaceship [
 	 sumOfThrowsCounterSpaceship >= sumOfThrowsActualSpaceship
 		ifTrue: [
 			actualSpaceship move: -1 * actualSpaceship position + 1.
-			actualSpaceship updateShield: -1.
+			self applyShieldLoss: actualSpaceship.
 			actualSpaceship mercenaries do: [ :aMercenary | aMercenary updateShield: -1 ]]
 		ifFalse: [
 			counterSpaceship move: -1 * counterSpaceship position + 1.
-			counterSpaceship updateShield: -1.
+			self applyShieldLoss: counterSpaceship.
 			counterSpaceship mercenaries do: [ :aMercenary | aMercenary updateShield: -1 ]].
 ]

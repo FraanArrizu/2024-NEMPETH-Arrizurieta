@@ -10,7 +10,8 @@ Class {
 		'cards',
 		'movementBySpeed',
 		'avaliableForMercenary',
-		'mercenaries'
+		'mercenaries',
+		'protectors'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -44,6 +45,11 @@ Spaceship >> addMercenary: aSpaceship [
 ]
 
 { #category : 'adding' }
+Spaceship >> addProtector: aSpaceship [
+	protectors add: aSpaceship .
+]
+
+{ #category : 'adding' }
 Spaceship >> addSpeed [
 	movementBySpeed := movementBySpeed + 1.
 ]
@@ -63,6 +69,11 @@ Spaceship >> changeTo: anState [
 	state := anState.
 ]
 
+{ #category : 'testing' }
+Spaceship >> hasAvailableProtectors [
+	^ protectors anySatisfy: [ :protector | protector isAvailable ]
+]
+
 { #category : 'accessing' }
 Spaceship >> id [
 	^ id
@@ -79,7 +90,13 @@ Spaceship >> initializeWith: anId [
 	shield := 3.
 	lapsCompleted := 0.
 	cards := OrderedCollection new.
-	state := AvailableState create
+	state := AvailableState create.
+	protectors := OrderedCollection new.
+]
+
+{ #category : 'testing' }
+Spaceship >> isAvailable [
+    ^ state isAvailable
 ]
 
 { #category : 'testing' }
@@ -127,6 +144,20 @@ Spaceship >> position [
 	^ position
 ]
 
+{ #category : 'accessing' }
+Spaceship >> protectors [
+  ^ protectors
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> receiveDamage: amount [
+
+	self updateShield:  -1 * amount.
+	shield <= 0 ifFalse: [ ^ self ].
+	self move: -1 * position + 1.
+	self changeTo: UnavailableState create
+]
+
 { #category : 'as yet unclassified' }
 Spaceship >> recoverShields [
 
@@ -136,6 +167,11 @@ Spaceship >> recoverShields [
 { #category : 'removing' }
 Spaceship >> removeMercenary: aSpaceship [ 
 	mercenaries remove: aSpaceship.
+]
+
+{ #category : 'removing' }
+Spaceship >> removeProtector: aSpaceship [
+	protectors remove: aSpaceship.
 ]
 
 { #category : 'as yet unclassified' }
