@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'tests' }
-ReversalModifierTest >> test001ReversalModifierCanBeCreated [
+ReversalModifierTest >> test001WhenReversalModifierIsCreatedThenIsInstanceOfReversalModifier [
     | modifier |
     
     modifier := ReversalModifier new.
@@ -15,7 +15,7 @@ ReversalModifierTest >> test001ReversalModifierCanBeCreated [
 ]
 
 { #category : 'tests' }
-ReversalModifierTest >> test002RespondsToApplyEffectOf [
+ReversalModifierTest >> test002WhenReversalModifierIsCreatedThenRespondsToApplyEffectOf [
     | modifier |
     
     modifier := ReversalModifier new.

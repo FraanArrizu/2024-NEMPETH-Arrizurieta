@@ -255,7 +255,7 @@ BoxTest >> test009WhenCardBoxApplyEffectThenSpaceshipAddACardOnItsPrivateDeck [
 ]
 
 { #category : 'tests' }
-BoxTest >> test010HasApplyNormalEffectMethod [
+BoxTest >> test010WhenBoxIsCreatedThenRespondsToApplyNormalEffect [
     | box |
     
     box := NormalBox new.
@@ -264,7 +264,7 @@ BoxTest >> test010HasApplyNormalEffectMethod [
 ]
 
 { #category : 'tests' }
-BoxTest >> test011NormalBoxHasApplyReversedEffectDefault [
+BoxTest >> test011WhenNormalBoxIsReversedThenKeepsDefaultBehavior [
     | box modifier spaceships actualSpaceship |
     
     box := NormalBox new.
@@ -278,7 +278,7 @@ BoxTest >> test011NormalBoxHasApplyReversedEffectDefault [
 ]
 
 { #category : 'tests' }
-BoxTest >> test012BlackHoleReversedMovesForward [
+BoxTest >> test012WhenBlackHoleIsReversedThenMovesSpaceshipForward [
     | blackHole modifier spaceships actualSpaceship |
     
     blackHole := BlackHole new.
@@ -293,7 +293,7 @@ BoxTest >> test012BlackHoleReversedMovesForward [
 ]
 
 { #category : 'tests' }
-BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
+BoxTest >> test013WhenMoonWalkIsReversedThenMovesAllSpaceshipsForward [
     | moonWalk modifier spaceships spaceship1 spaceship2 actualSpaceship |
     
     moonWalk := MoonWalk createWith: 3.
@@ -316,7 +316,7 @@ BoxTest >> test013MoonWalkReversedMovesAllSpaceshipsForward [
 ]
 
 { #category : 'tests' }
-BoxTest >> test014WormholeReversedMovesInOppositeDirection [
+BoxTest >> test014WhenWormholeIsReversedThenMovesInOppositeDirection [
     | wormholeStart wormholeEnd modifier spaceships actualSpaceship |
     
     wormholeStart := Wormhole new.
@@ -338,7 +338,7 @@ BoxTest >> test014WormholeReversedMovesInOppositeDirection [
 ]
 
 { #category : 'tests' }
-BoxTest >> test015AtomicBombReversedBehavesLikeNormal [
+BoxTest >> test015WhenAtomicBombIsReversedThenBehavesLikeNormal [
     | atomicBomb normalModifier reversalModifier spaceships1 spaceships2 spaceship1 spaceship2 actualSpaceship1 actualSpaceship2 |
     
     spaceship1 := Spaceship createWithId: 1.
@@ -371,7 +371,7 @@ BoxTest >> test015AtomicBombReversedBehavesLikeNormal [
 ]
 
 { #category : 'tests' }
-BoxTest >> test016CardBoxReversedDiscardsRandomCard [
+BoxTest >> test016WhenCardBoxIsReversedThenDiscardsRandomCard [
     | cards aDeck aCardBox spaceships aSpaceship anotherSpaceship actualSpaceship normalModifier reversalModifier |
     
     aSpaceship := Spaceship createWithId: 1.
@@ -402,7 +402,7 @@ BoxTest >> test016CardBoxReversedDiscardsRandomCard [
 ]
 
 { #category : 'tests' }
-BoxTest >> test017LoadedHyperJumpReversedMovesBackward [
+BoxTest >> test017WhenHyperJumpIsReversedThenMovesBackward [
     | hyperJump normalModifier reversalModifier actualSpaceship1 actualSpaceship2 parsec |
     
     parsec := Parsec createWith: 6.
@@ -427,7 +427,7 @@ BoxTest >> test017LoadedHyperJumpReversedMovesBackward [
 ]
 
 { #category : 'tests' }
-BoxTest >> test018HyperSpaceJumpReversedMovesBackwardAndGainsShield [
+BoxTest >> test018WhenHyperSpaceJumpIsReversedThenMovesBackwardAndGainsShield [
     | hyperSpaceJump normalModifier reversalModifier actualSpaceship1 actualSpaceship2 |
     
     hyperSpaceJump := HyperSpaceJump new.
@@ -450,24 +450,23 @@ BoxTest >> test018HyperSpaceJumpReversedMovesBackwardAndGainsShield [
 ]
 
 { #category : 'tests' }
-BoxTest >> test074ReversedCardBoxWithoutCardsDoesNotFail [
+BoxTest >> test019WhenCardBoxIsReversedAndSpaceshipHasNoCardsThenDoesNotFail [
     | cardBox spaceship modifier |
-    
+
     cardBox := CardBox new.
     spaceship := Spaceship createWithId: 1.
     modifier := ReversalModifier new.
-    
-    self shouldnt: [ 
-        cardBox applyEffect: OrderedCollection new 
-               and: spaceship 
-               through: modifier 
-    ] raise: Error.
-    
+
+    cardBox applyEffect: OrderedCollection new
+           and: spaceship
+           through: modifier.
+
     self assert: spaceship position equals: 1.
+    self assert: spaceship cards isEmpty.
 ]
 
 { #category : 'tests' }
-BoxTest >> test075ReversalOnNormalBoxDoesNothing [
+BoxTest >> test020WhenReversalIsAppliedToNormalBoxThenDoesNothing [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 |
     
     aDie := LoadedDie of: 10.

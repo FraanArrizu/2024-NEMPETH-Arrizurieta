@@ -2289,7 +2289,7 @@ GameTest >> test052WhenReversalCardIsPlayedThenPositionIsReversed [
 ]
 
 { #category : 'tests' }
-GameTest >> test053ReversalCanOnlyBePlayedDuringSpaceshipTurn [
+GameTest >> test053WhenReversalIsPlayedByWrongSpaceshipThenRaisesError [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
 
     aDie := LoadedDie of: 10.
@@ -2324,7 +2324,7 @@ GameTest >> test053ReversalCanOnlyBePlayedDuringSpaceshipTurn [
 ]
 
 { #category : 'tests' }
-GameTest >> test054ReversalCardOnlyAffectsTargetPosition [
+GameTest >> test054WhenReversalIsAppliedThenOnlyAffectsTargetPosition [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2363,7 +2363,7 @@ GameTest >> test054ReversalCardOnlyAffectsTargetPosition [
 ]
 
 { #category : 'tests' }
-GameTest >> test055MultipleReversalsToggleEffect [
+GameTest >> test055WhenMultipleReversalsAreAppliedThenToggleEffect [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2404,7 +2404,7 @@ GameTest >> test055MultipleReversalsToggleEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test056ReversalIsAddedToPermanentCards [
+GameTest >> test056WhenReversalIsPlayedThenIsAddedToPermanentCards [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2444,7 +2444,7 @@ GameTest >> test056ReversalIsAddedToPermanentCards [
 ]
 
 { #category : 'tests' }
-GameTest >> test057CancellationRemovesReversal [
+GameTest >> test057WhenCancellationIsPlayedThenRemovesReversal [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2500,7 +2500,7 @@ GameTest >> test057CancellationRemovesReversal [
 ]
 
 { #category : 'tests' }
-GameTest >> test058ReversalCardInvertsMoonWalkEffect [
+GameTest >> test058WhenMoonWalkIsReversedThenInvertsEffect [
     | dices aDie cards aDeck boxes aMoonWalk aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2552,7 +2552,7 @@ GameTest >> test058ReversalCardInvertsMoonWalkEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test059ReversalCardInvertsBlackHoleEffect [
+GameTest >> test059WhenBlackHoleIsReversedThenInvertsEffect [
     | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2600,7 +2600,7 @@ GameTest >> test059ReversalCardInvertsBlackHoleEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test060ReversalCardInvertsWormholeEffect [
+GameTest >> test060WhenWormholeIsReversedThenInvertsEffect [
     | dices aDie cards aDeck boxes wormholeStart wormholeEnd aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2661,7 +2661,7 @@ GameTest >> test060ReversalCardInvertsWormholeEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test061ReversalCardInvertsHyperSpaceJumpEffect [
+GameTest >> test061WhenHyperSpaceJumpIsReversedThenInvertsEffect [
     | dices aDie cards aDeck aNormalBoxOne aNormalBoxTwo aNormalBoxThree aNormalBoxFour aNormalBoxFive aHyperSpaceJump aPath aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2713,7 +2713,7 @@ GameTest >> test061ReversalCardInvertsHyperSpaceJumpEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test062ReversalCardInvertsHyperJumpEffect [
+GameTest >> test062WhenHyperJumpIsReversedThenInvertsEffect [
     | dices aDie cards aDeck boxes aHyperJump aBoard aGame cardArguments parsec |
     
     aDie := LoadedDie of: 10.
@@ -2763,7 +2763,7 @@ GameTest >> test062ReversalCardInvertsHyperJumpEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test063ReversalCardInvertsCardBoxEffect [
+GameTest >> test063WhenCardBoxIsReversedThenInvertsEffect [
     | dices aDie cards aDeck boxes aCardBox aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2820,7 +2820,7 @@ GameTest >> test063ReversalCardInvertsCardBoxEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test064ReversalPersistsBetweenTurns [
+GameTest >> test064WhenReversalIsAppliedThenPersistsBetweenTurns [
     | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2878,7 +2878,7 @@ GameTest >> test064ReversalPersistsBetweenTurns [
 ]
 
 { #category : 'tests' }
-GameTest >> test065ReversalInInvalidPositionRaisesError [
+GameTest >> test065WhenReversalTargetsInvalidPositionThenRaisesError [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2911,7 +2911,7 @@ GameTest >> test065ReversalInInvalidPositionRaisesError [
 ]
 
 { #category : 'tests' }
-GameTest >> test066ReversalInZeroOrNegativePositionRaisesError [
+GameTest >> test066WhenReversalTargetsZeroOrNegativePositionThenRaisesError [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2953,7 +2953,7 @@ GameTest >> test066ReversalInZeroOrNegativePositionRaisesError [
 ]
 
 { #category : 'tests' }
-GameTest >> test067CancellationWithNoReversalRaisesError [
+GameTest >> test067WhenCancellationIsPlayedWithNoReversalThenRaisesError [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -2988,7 +2988,7 @@ GameTest >> test067CancellationWithNoReversalRaisesError [
 ]
 
 { #category : 'tests' }
-GameTest >> test068ReversedWormholeGoesToPreviousLapFromStart [
+GameTest >> test068WhenReversedWormholeIsTriggeredFromStartThenGoesToPreviousLap [
     | dices aDie cards aDeck boxes wormholeStart wormholeEnd aBoard aGame cardArguments spaceship1 |
     
     aDie := LoadedDie of: 10.
@@ -3050,7 +3050,7 @@ GameTest >> test068ReversedWormholeGoesToPreviousLapFromStart [
 ]
 
 { #category : 'tests' }
-GameTest >> test073ReversedWormholeBackwardGoesToNextLap [
+GameTest >> test073WhenReversedBackwardWormholeIsTriggeredThenGoesToNextLap [
     | dices aDie cards aDeck boxes wormholeStart wormholeEnd aBoard aGame cardArguments spaceship1 |
     
     aDie := LoadedDie of: 10.
@@ -3106,7 +3106,7 @@ GameTest >> test073ReversedWormholeBackwardGoesToNextLap [
 ]
 
 { #category : 'tests' }
-GameTest >> test075MultipleReversalsOnDifferentPositions [
+GameTest >> test075WhenMultipleReversalsAreOnDifferentPositionsThenEachWorks [
     | dices aDie cards aDeck boxes moonWalk blackHole aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3178,7 +3178,7 @@ GameTest >> test075MultipleReversalsOnDifferentPositions [
 ]
 
 { #category : 'tests' }
-GameTest >> test076ReversedCardBoxWithNoCardsDoesNotFail [
+GameTest >> test076WhenReversedCardBoxHasNoCardsThenDoesNotFail [
     | dices aDie cards aDeck boxes aCardBox aBoard aGame cardArguments spaceship1 |
 
     aDie := LoadedDie of: 10.
@@ -3230,7 +3230,7 @@ GameTest >> test076ReversedCardBoxWithNoCardsDoesNotFail [
 ]
 
 { #category : 'tests' }
-GameTest >> test077RedoCanRepeatReversalEffect [
+GameTest >> test077WhenRedoIsPlayedThenCanRepeatReversalEffect [
     | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
 
     aDie := LoadedDie of: 10.
@@ -3292,7 +3292,7 @@ GameTest >> test077RedoCanRepeatReversalEffect [
 ]
 
 { #category : 'tests' }
-GameTest >> test078RepeatWorksWithReversedBoxEffects [
+GameTest >> test078WhenRepeatIsPlayedThenWorksWithReversedBoxEffects [
     | dices aDie cards aDeck boxes aBlackHole aBoard aGame cardArguments |
 
     aDie := LoadedDie of: 10.
@@ -3348,7 +3348,7 @@ GameTest >> test078RepeatWorksWithReversedBoxEffects [
 ]
 
 { #category : 'tests' }
-GameTest >> test079ReversedWormholeForwardInLapZeroStaysInBounds [
+GameTest >> test079WhenReversedForwardWormholeIsInLapZeroThenStaysInBounds [
     | dices aDie cards aDeck boxes wormholeStart wormholeEnd aBoard aGame cardArguments spaceship1 |
     
     aDie := LoadedDie of: 10.
@@ -3406,7 +3406,7 @@ GameTest >> test079ReversedWormholeForwardInLapZeroStaysInBounds [
 ]
 
 { #category : 'tests' }
-GameTest >> test080CancellationRemovesCorrectReversalWhenMultipleWithSameIdExist [
+GameTest >> test080WhenCancellationIsPlayedThenRemovesCorrectReversalWithSameId [
     | dices aDie cards aDeck boxes blackHole1 blackHole2 aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
@@ -3480,7 +3480,7 @@ GameTest >> test080CancellationRemovesCorrectReversalWhenMultipleWithSameIdExist
 ]
 
 { #category : 'tests' }
-GameTest >> test081ReversedCardBoxWithExactlyOneCardRemovesIt [
+GameTest >> test081WhenReversedCardBoxHasExactlyOneCardThenRemovesIt [
     | dices aDie cards aDeck boxes aCardBox aBoard aGame cardArguments spaceship1 |
     
     aDie := LoadedDie of: 10.
@@ -3532,7 +3532,7 @@ GameTest >> test081ReversedCardBoxWithExactlyOneCardRemovesIt [
 ]
 
 { #category : 'tests' }
-GameTest >> test082ReversedMoonWalkMovesAllSpaceshipsIncludingPositionOne [
+GameTest >> test082WhenReversedMoonWalkIsTriggeredThenMovesAllSpaceshipsIncludingPositionOne [
     | dices aDie cards aDeck boxes aMoonWalk aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3583,7 +3583,7 @@ GameTest >> test082ReversedMoonWalkMovesAllSpaceshipsIncludingPositionOne [
 ]
 
 { #category : 'tests' }
-GameTest >> test083HyperJumpIndexPersistsCorrectlyWithReversalToggling [
+GameTest >> test083WhenReversalIsToggledThenHyperJumpIndexPersistsCorrectly [
     | dices aDie cards aDeck boxes aHyperJump aBoard aGame cardArguments parsec1 parsec2 parsec3 |
     
     aDie := LoadedDie of: 10.
@@ -3651,7 +3651,7 @@ GameTest >> test083HyperJumpIndexPersistsCorrectlyWithReversalToggling [
 ]
 
 { #category : 'tests' }
-GameTest >> test087NoBattleWhenLandingOnReversedBoxWithSpaceship [
+GameTest >> test087WhenLandingOnReversedBoxWithSpaceshipThenNoBattle [
     | dices aDie cards aDeck boxes aMoonWalk aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3712,7 +3712,7 @@ GameTest >> test087NoBattleWhenLandingOnReversedBoxWithSpaceship [
 ]
 
 { #category : 'tests' }
-GameTest >> test088ProtectorCardIsAPermanentCard [
+GameTest >> test088WhenProtectorIsCreatedThenIsAPermanentCard [
     | protectorCard |
     
     protectorCard := Protector new.
@@ -3721,7 +3721,7 @@ GameTest >> test088ProtectorCardIsAPermanentCard [
 ]
 
 { #category : 'tests' }
-GameTest >> test089SpaceshipHasProtectorsCollection [
+GameTest >> test089WhenSpaceshipIsCreatedThenHasProtectorsCollection [
     | spaceship |
     
     spaceship := Spaceship createWithId: 1.
@@ -3730,7 +3730,7 @@ GameTest >> test089SpaceshipHasProtectorsCollection [
 ]
 
 { #category : 'tests' }
-GameTest >> test090SpaceshipCanAddProtector [
+GameTest >> test090WhenProtectorIsAddedThenSpaceshipHasIt [
     | spaceship1 spaceship2 |
     
     spaceship1 := Spaceship createWithId: 1.
@@ -3743,7 +3743,7 @@ GameTest >> test090SpaceshipCanAddProtector [
 ]
 
 { #category : 'tests' }
-GameTest >> test091GameCanApplyProtector [
+GameTest >> test091WhenGameAppliesProtectorThenSpaceshipGetsProtector [
     | dices aDie cards aDeck boxes aBoard aGame spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3772,7 +3772,7 @@ GameTest >> test091GameCanApplyProtector [
 ]
 
 { #category : 'tests' }
-GameTest >> test092ProtectorCardCanBePlayed [
+GameTest >> test092WhenProtectorCardIsPlayedThenAppliesProtection [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3806,59 +3806,7 @@ GameTest >> test092ProtectorCardCanBePlayed [
 ]
 
 { #category : 'tests' }
-GameTest >> test093WhenProtectedSpaceshipLosesBattleProtectorAbsorbsDamage [
-    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
-    
-    aDie := LoadedDie of: 10.
-    aDie add: (OrderedCollection with: 1 with: 1 with: 5 with: 2).
-    dices := OrderedCollection with: aDie.
-
-    cards := { 
-        (1 -> Protector).
-        (2 -> Speed).
-        (3 -> Speed).
-        (4 -> Speed).
-    } asDictionary.
-    aDeck := LoadedDeck createWith: cards.
-
-    boxes := {
-        NormalBox new.
-        NormalBox new.
-        NormalBox new.
-        NormalBox new.
-        NormalBox new.
-    } asOrderedCollection.
-
-    aBoard := Board createWith: boxes.
-    aGame := Game
-        createWithNumberOfSpaceships: 2
-        and: dices
-        and: aDeck
-        and: aBoard
-        andLapsToWin: 1.
-    
-    spaceship1 := aGame getSpaceships first.
-    spaceship2 := aGame getSpaceships second.
-    
-    cardArguments := Dictionary new.
-    cardArguments at: 'idSpaceship' put: 1.
-    cardArguments at: 'idCardToUse' put: 1.
-    cardArguments at: 'idProtectorSpaceship' put: 2.
-    aGame playCard: cardArguments.
-    
-    aGame playTurn.
-
-    aGame playTurn.
-    
-    self assert: spaceship1 position equals: 1.
-    
-    self assert: spaceship1 shield equals: 3.
-    
-    self assert: spaceship2 shield equals: 2.
-]
-
-{ #category : 'tests' }
-GameTest >> test094WhenProtectorRunsOutOfShieldsIsRemovedAndPenalized [
+GameTest >> test093WhenProtectedSpaceshipLosesBattleThenProtectorAbsorbsDamage [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -3920,7 +3868,69 @@ GameTest >> test094WhenProtectorRunsOutOfShieldsIsRemovedAndPenalized [
 ]
 
 { #category : 'tests' }
-GameTest >> test095ProtectorLosesShieldWhenProtectedBattlesThirdSpaceship [
+GameTest >> test094WhenProtectorRunsOutOfShieldsThenIsPenalized [
+    | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
+    
+    aDie := LoadedDie of: 10.
+    aDie add: ({ 
+        1. 1. 5. 2.
+        1. 1. 5. 2.
+        1. 1. 5. 2
+    } asOrderedCollection).
+    dices := OrderedCollection with: aDie.
+
+    cards := { 
+        (1 -> Protector).
+        (2 -> Speed).
+        (3 -> Speed).
+        (4 -> Speed).
+    } asDictionary.
+    aDeck := LoadedDeck createWith: cards.
+
+    boxes := {
+        NormalBox new.
+        NormalBox new.
+        NormalBox new.
+    } asOrderedCollection.
+
+    aBoard := Board createWith: boxes.
+    aGame := Game
+        createWithNumberOfSpaceships: 2
+        and: dices
+        and: aDeck
+        and: aBoard
+        andLapsToWin: 3.
+    
+    spaceship1 := aGame getSpaceships first.
+    spaceship2 := aGame getSpaceships second.
+    
+    cardArguments := Dictionary new.
+    cardArguments at: 'idSpaceship' put: 1.
+    cardArguments at: 'idCardToUse' put: 1.
+    cardArguments at: 'idProtectorSpaceship' put: 2.
+    aGame playCard: cardArguments.
+    
+    aGame playTurn.
+    aGame playTurn.
+    self assert: spaceship2 shield equals: 2.
+    self assert: spaceship1 position equals: 1.
+    
+    aGame playTurn.
+    aGame playTurn.
+    self assert: spaceship2 shield equals: 1.
+    
+    aGame playTurn.
+    aGame playTurn.
+    
+    self assert: spaceship2 shield equals: 0.
+    
+    self assert: spaceship2 position equals: 1.
+    
+    self deny: spaceship1 protectors isEmpty.
+]
+
+{ #category : 'tests' }
+GameTest >> test095WhenProtectedBattlesThirdSpaceshipThenProtectorLosesShield [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 spaceship3 |
     
     aDie := LoadedDie of: 10.
@@ -3982,7 +3992,7 @@ GameTest >> test095ProtectorLosesShieldWhenProtectedBattlesThirdSpaceship [
 ]
 
 { #category : 'tests' }
-GameTest >> test096ProtectorGetsPenalizedWhenLosesBattleDirectly [
+GameTest >> test096WhenProtectorLosesBattleDirectlyThenGetsPenalized [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 spaceship3 |
     
     aDie := LoadedDie of: 10.
@@ -4063,7 +4073,7 @@ GameTest >> test096ProtectorGetsPenalizedWhenLosesBattleDirectly [
 ]
 
 { #category : 'tests' }
-GameTest >> test097ProtectorGetsPenalizedAbsorbingDamageFromProtectedBattles [
+GameTest >> test097WhenProtectorAbsorbsDamageFromProtectedBattlesThenGetsPenalized [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -4127,7 +4137,7 @@ GameTest >> test097ProtectorGetsPenalizedAbsorbingDamageFromProtectedBattles [
 ]
 
 { #category : 'tests' }
-GameTest >> test098MultipleProtectorsAbsorbDamageInOrder [
+GameTest >> test098WhenSpaceshipHasMultipleProtectorsThenAbsorbDamageInOrder [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 spaceship3 |
     
     aDie := LoadedDie of: 10.
@@ -4201,7 +4211,7 @@ GameTest >> test098MultipleProtectorsAbsorbDamageInOrder [
 ]
 
 { #category : 'tests' }
-GameTest >> test099OneProtectorForMultipleSpaceships [
+GameTest >> test099WhenOneProtectorProtectsMultipleSpaceshipsThenWorksForBoth [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 spaceship3 |
     
     aDie := LoadedDie of: 10.
@@ -4294,7 +4304,7 @@ GameTest >> test099OneProtectorForMultipleSpaceships [
 ]
 
 { #category : 'tests' }
-GameTest >> test100ProtectorRecoveryAfterPenalty [
+GameTest >> test100WhenProtectorIsPenalizedThenRecoversAfterTwoTurns [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -4375,7 +4385,7 @@ GameTest >> test100ProtectorRecoveryAfterPenalty [
 ]
 
 { #category : 'tests' }
-GameTest >> test101SpaceshipCanBattleItsOwnProtector [
+GameTest >> test101WhenSpaceshipBattlesItsOwnProtectorThenProtectionStillWorks [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -4427,7 +4437,7 @@ GameTest >> test101SpaceshipCanBattleItsOwnProtector [
 ]
 
 { #category : 'tests' }
-GameTest >> test102CancellationRemovesProtector [
+GameTest >> test102WhenCancellationIsPlayedThenRemovesProtector [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -4484,7 +4494,7 @@ GameTest >> test102CancellationRemovesProtector [
 ]
 
 { #category : 'tests' }
-GameTest >> test103CannotProtectSelf [
+GameTest >> test103WhenSpaceshipTriesToProtectItselfThenRaisesError [
     | dices aDie cards aDeck boxes aBoard aGame cardArguments |
     
     aDie := LoadedDie of: 10.
