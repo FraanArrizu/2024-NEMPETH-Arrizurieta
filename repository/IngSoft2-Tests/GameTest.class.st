@@ -4428,7 +4428,6 @@ GameTest >> test101SpaceshipCanBattleItsOwnProtector [
 
 { #category : 'tests' }
 GameTest >> test102CancellationRemovesProtector [
-    "B protege a A. Se juega Cancellation sobre la carta Protector. B ya no protege a A"
     | dices aDie cards aDeck boxes aBoard aGame cardArguments spaceship1 spaceship2 |
     
     aDie := LoadedDie of: 10.
@@ -4459,7 +4458,6 @@ GameTest >> test102CancellationRemovesProtector [
     spaceship1 := aGame getSpaceships first.
     spaceship2 := aGame getSpaceships second.
     
-    "S1 juega Protector (B protege a A)"
     cardArguments := Dictionary new.
     cardArguments at: 'idSpaceship' put: 1.
     cardArguments at: 'idCardToUse' put: 1.
@@ -4469,24 +4467,20 @@ GameTest >> test102CancellationRemovesProtector [
     self assert: (spaceship1 protectors includes: spaceship2).
     self assert: aGame getPermanentCardPlayed size equals: 1.
     
-    "S1 juega Cancellation sobre la carta Protector"
     cardArguments := Dictionary new.
     cardArguments at: 'idSpaceship' put: 1.
     cardArguments at: 'idCardToUse' put: 2.
     cardArguments at: 'idTargetCard' put: 1.
     aGame playCard: cardArguments.
     
-    "La carta Protector fue removida"
     self assert: aGame getPermanentCardPlayed size equals: 0.
-    
-    "B ya no está en la lista de protectores de A"
+
     self assert: spaceship1 protectors isEmpty.
     
-    "Verificar que A pierde su propio escudo ahora"
     aGame applyShieldLoss: spaceship1.
     
-    self assert: spaceship1 shield equals: 2.  "A perdió su escudo"
-    self assert: spaceship2 shield equals: 3   "B no absorbió"
+    self assert: spaceship1 shield equals: 2.
+    self assert: spaceship2 shield equals: 3
 ]
 
 { #category : 'tests' }
